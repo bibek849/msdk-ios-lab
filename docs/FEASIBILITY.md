@@ -30,6 +30,8 @@ These leads justify experiments about connection and runtime dependencies. They 
 
 ### 1. Original native implementation of a narrow capability subset
 
+Apply the [reuse-first policy](PORTING_POLICY.md) before writing an implementation. Preserve any compatible, permitted component and isolate platform differences behind adapters. Original implementation is for necessary gaps; it is not an instruction to translate all SDK logic. A source/core reuse route remains conditional on obtaining suitable access and rights.
+
 Start with connection lifecycle, read-only observations and video framing. Use original Swift interfaces with explicit capability states, missing values, timestamps and provenance. Keep packet parsing detached from the physical transport so synthetic fixtures can exercise fragmentation, malformed lengths, timeout and reconnection without a drone.
 
 **First unknown:** can this app open and sustain a permitted External Accessory session on the actual iPhone/controller combination? **Next unknown:** can that connection reach the aircraft after a true cold start? Data receipt, meaningful telemetry and decodable video each need their own evidence.

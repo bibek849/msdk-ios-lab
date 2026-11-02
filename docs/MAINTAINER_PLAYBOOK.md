@@ -10,6 +10,10 @@ A ready task names one question, acceptance criteria, relevant files, the availa
 
 Start with a few well-scoped tasks instead of a large empty board. Keep independent software, research and hardware lanes available so contributors can continue while a device question is blocked. A claim should have a named human owner and a short plan; if that person becomes unavailable, ask before reallocating overlapping work. There is no automatic ownership expiry or promised response-time SLA.
 
+Before assigning implementation, require the [component decision](templates/COMPONENT_DECISION.md): why the next iOS capability needs it, what can be reused and the specific incompatibility to address. Compatible code stays in place; language defaults govern necessary new code.
+
+For an opted-in agent contributor, assign their human GitHub account and link the task brief, following [the event workflow](AGENT_EVENT_WORKFLOW.md). Ask external contributors to comment first so they can be assigned without upstream write access. Keep scope changes and approved hardware feedback on the linked issue/PR; update current labels when blocked, reassigned or complete. Receiving a notification never grants device or merge authority. No central agent listener is configured.
+
 ## Track state explicitly
 
 Use the labels below, keeping one `status:` label at a time and linking the task's PR and run records. Also use `hardware: not-needed` or `hardware: owner-run` to show the validation lane. These labels record decisions; no bot automatically verifies the transition.

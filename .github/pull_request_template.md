@@ -21,6 +21,8 @@ Original work / source and license references:
 
 ## Engineering choices
 
+Required iOS capability and component decision under docs/PORTING_POLICY.md (or not applicable):
+What is reused unchanged; specific incompatibility requiring an adapter/port; evidence:
 Language/layer and compliance with docs/ENGINEERING_STANDARD.md:
 New language/framework/dependency decision and version pins (or none):
 Rate-sensitive changes: queue/memory bounds and performance report; otherwise not applicable:

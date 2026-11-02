@@ -4,9 +4,9 @@ Status: **research foundation, 2026-11-02**. No device combination has passed th
 
 ## Two tracks, one honest destination
 
-**Native track:** investigate whether a normally provisioned iOS application can communicate directly with a supported controller, then implement an independently authored compatibility layer where permissions and accessible interfaces allow it. This is the primary research question.
+**Native track:** investigate whether a normally provisioned iOS application can communicate directly with a supported controller. Apply the [reuse-first policy](PORTING_POLICY.md) to each required component: preserve compatible, permitted code and implement only missing iOS boundaries or necessary incompatible parts. This is the primary research question.
 
-The first native approach is a narrow original implementation of a demonstrated transport and initialization path. A separate, rights-gated binary-rehosting spike may examine whether Android binary format, ABI, runtime and Apple execution requirements can be satisfied. General rehosting precedents are not evidence that DJI's libraries run on iPhone; keep this spike bounded and do not let it consume the read-only native investigation.
+The first native approach is a narrow implementation of a demonstrated transport and initialization path, selected after the component reuse assessment. Original code fills gaps only where permissions and evidence permit it; no reusable SDK core has been established. A separate, rights-gated binary-rehosting spike may examine whether Android binary format, ABI, runtime and Apple execution requirements can be satisfied. General rehosting precedents are not evidence that DJI's libraries run on iPhone; keep this spike bounded and do not let it consume the read-only native investigation.
 
 **Independent cold start is a core gate:** the application must initialize a freshly powered controller/aircraft session without DJI Fly first preparing it. A connection that works only after Fly is a diagnostic lead, not a native-port success. The [shared discussion's](https://chatgpt.com/share/6ae91470-a894-83e9-b9c8-56fd67b81f81) RC-N3/Neo initialization report is an unverified lead for a different aircraft; it cannot establish Mini 4 Pro behavior.
 

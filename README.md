@@ -16,6 +16,8 @@ We want to learn whether an iPhone can establish its own controller/aircraft ses
 - [Roadmap](docs/ROADMAP.md): incremental stages, acceptance evidence and stop conditions.
 - [Contributor backlog](docs/CONTRIBUTOR_BACKLOG.md): scoped tasks for remote developers.
 - [Engineering standard](docs/ENGINEERING_STANDARD.md): language choices, native media, interoperability, dependency and measured-performance requirements.
+- [Reuse-first porting policy](docs/PORTING_POLICY.md): keep compatible code; adapt or port only the parts the next iOS capability needs.
+- [Agent event workflow](docs/AGENT_EVENT_WORKFLOW.md): assignments, review and hardware feedback for contributors using their own agents.
 - [Hardware testing](docs/HARDWARE_TESTING.md): contributor-to-maintainer handoff and test procedure.
 - [Compatibility](docs/COMPATIBILITY.md): combinations and capabilities, with unknowns retained.
 - [Test results](docs/TEST_RESULTS.md): commands actually run; hardware work remains separate.
@@ -30,13 +32,15 @@ Opening an accessory, recognizing a controller, receiving aircraft telemetry, de
 
 | Route | Purpose | Current status |
 |---|---|---|
-| Small native Swift implementation | Primary route: independently implement the capabilities needed for one combination, using permitted interfaces and authorized protocol knowledge | Access, session initialization and behavior unproven |
+| Small native implementation | Primary goal: reuse compatible, permitted components and implement only the missing iOS boundaries/capabilities for one combination | Access, reusable SDK core, session initialization and behavior unproven |
 | DJI-supported source/core port | Prefer vendor cooperation if portable source or an iOS core becomes available under suitable terms | No such access established |
 | Android binary compatibility experiment | Optional, separately gated research into runtime/JNI/loader dependencies | No DJI-on-iPhone evidence; permission review required first |
 | Android 5.18.0 reference bench | Compare behavior against the official SDK on supported hardware | New project baseline not yet run |
 | Android-backed network client | Optional way to exercise Swift contracts and networking | A bridge would remain an Android dependency and would not close the native-port goal |
 
 The current Swift package contains only original telemetry contracts, validation and synthetic replay. There is no accessory transport, networking, video decoder, registration implementation, motor command or extracted vendor code.
+
+We are not translating all of MSDK. Each component must earn its place in the next experiment: reuse it if compatible and permitted, rebuild unchanged source where possible, adapt the platform boundary, and port only a demonstrated necessary incompatibility. Android artifact incompatibility does not prove that all underlying logic needs rewriting. [Record the component decision](docs/templates/COMPONENT_DECISION.md) before implementation.
 
 ## Try the software foundation
 
@@ -77,6 +81,8 @@ Scoped issue → contributor + agent → small PR → hosted checks + review
 ```
 
 Start with [AI_CONTRIBUTOR_WORKFLOW.md](docs/AI_CONTRIBUTOR_WORKFLOW.md). The [handoff format and tool](docs/HANDOFF_FORMAT.md) prepare a request bound to committed source; they do not execute commands or approve a hardware run. The [maintainer playbook](docs/MAINTAINER_PLAYBOOK.md) describes how requests enter the local test queue.
+
+For ongoing work, assign the human contributor's GitHub account and keep actionable communication on the linked issue/PR. Contributors can use native notifications, their own scheduled agent checks, or eligible product event integrations. The [event workflow](docs/AGENT_EVENT_WORKFLOW.md) includes setup commands, an opt-in template and the future webhook design. No project-wide agent listener is deployed.
 
 ## Project standards
 
