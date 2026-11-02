@@ -52,13 +52,29 @@ python3 tools/check_repository.py
 
 **PASS:** 17 Markdown files, 39 local link targets and 2 JSON files checked. External URLs and Markdown anchors are outside the local checker. An independent source review found one inconsistent repetition count; it was corrected to five cold and five separately recorded primed runs throughout the plan.
 
+### Hosted CI
+
+[GitHub Actions run 41542956868](https://github.com/bibek849/msdk-ios-lab/actions/runs/41542956868) completed successfully for initial commit `abfa0609210b266c175990be3eaced5ce1374203`.
+
+Commands executed on the pinned Linux Swift image:
+
+```sh
+swift --version
+swift test
+swift run msdk-ios-replay
+```
+
+**PASS:** Swift 6.0.3 (`swift-6.0.3-RELEASE`), 16 tests with zero failures, and three synthetic replay samples. The separate document job also passed `python3 tools/check_repository.py`. Both jobs used read-only repository permissions. No credentials, iOS signing or physical devices were involved.
+
+This closes the initial Linux/exact-toolchain software check only. The evidence commit updating this document does not change Swift source or fixtures.
+
 ### Remaining checks
 
 | Layer | Status |
 |---|---|
 | iOS SDK type-check | PASS; compiler only |
 | Documentation links / JSON | PASS; local targets and JSON syntax only |
-| Hosted CI / Linux / exact Swift 6.0.3 | Configured; not yet observed |
+| Hosted CI / Linux / exact Swift 6.0.3 | PASS for the linked initial commit |
 | Signed iOS app / iPhone 15 Pro Max accessory probe | NOT RUN |
 | Android MSDK 5.18.0 reference baseline | NOT RUN |
 | DJI cold start, telemetry, video, camera/gimbal, flight, RC takeover | NOT RUN |

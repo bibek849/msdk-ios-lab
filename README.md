@@ -36,13 +36,17 @@ The current Swift package contains only original telemetry contracts, validation
 
 ## Try the software foundation
 
-Install Swift 6.0 or later, then run from the repository root:
+Install Swift 6.0 or later, clone [the public repository](https://github.com/bibek849/msdk-ios-lab), then run from the repository root:
 
 ```sh
+git clone https://github.com/bibek849/msdk-ios-lab.git
+cd msdk-ios-lab
 swift test
 swift run msdk-ios-replay
 python3 tools/check_repository.py
 ```
+
+The initial 16 tests pass on macOS and in the pinned Swift 6.0.3 Linux [CI run](https://github.com/bibek849/msdk-ios-lab/actions/runs/41542956868). The core also type-checks against the iOS SDK; no signed device app has been tested.
 
 See [the Swift core guide](docs/SWIFT_CORE.md) for the fixture format, validation semantics and limitations. Replay is labeled independently from the original sample source. Local/macOS or Linux success does not prove an iOS device build, accessory access or DJI behavior.
 
