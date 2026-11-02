@@ -6,4 +6,4 @@ DJI's MSDK 5.18.0 sample license distinguishes MIT sample code from the SDK gove
 
 Community projects in [docs/SOURCES.md](docs/SOURCES.md) are references, not dependencies or proof of compatibility. Different projects have different licenses; a public repository is not necessarily open source or permission to copy. Retain exact revision and permission records before importing any material in a later change.
 
-The GitHub Actions workflow uses the MIT-licensed [actions/checkout](https://github.com/actions/checkout/tree/11bd71901bbe5b1630ceea73d27597364c9af683) action, pinned by commit. The build uses the official Swift toolchain; no third-party Swift packages are required. CI infrastructure is separate from iOS signing and physical hardware execution.
+The GitHub Actions workflow uses the MIT-licensed [actions/checkout](https://github.com/actions/checkout/tree/3d3c42e5aac5ba805825da76410c181273ba90b1) action (v7.0.1), pinned by commit. The build uses the official Swift toolchain; no third-party Swift packages are required. CI infrastructure is separate from iOS signing and physical hardware execution.

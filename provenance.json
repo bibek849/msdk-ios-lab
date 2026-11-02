@@ -16,7 +16,7 @@
   },
   "swift_tools_minimum": "6.0",
   "ci": {
-    "checkout_commit": "11bd71901bbe5b1630ceea73d27597364c9af683",
+    "checkout_commit": "3d3c42e5aac5ba805825da76410c181273ba90b1",
     "swift_image": "swift:6.0.3-jammy@sha256:95f6ef898992dc840b35517e780f6f6db9661432775ab0b33cc0a531ea749bdb",
     "runner": "ubuntu-24.04",
     "runner_note": "Hosted runner image updates independently; Swift container and checkout action pinned"

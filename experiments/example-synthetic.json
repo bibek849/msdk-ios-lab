@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "id": "SYNTHETIC-REPLAY-001",
+  "kind": "software_only",
+  "stage": "S1",
+  "question": "Does the committed synthetic fixture replay three MOCK-source observations while preserving REPLAY delivery and unknown values?",
+  "build_commands": [
+    "swift build"
+  ],
+  "procedure": [
+    "From the reviewed source commit, run swift test.",
+    "Run swift run msdk-ios-replay fixtures/synthetic-telemetry-v1.json.",
+    "Record the Swift version, exit code and synthetic summary only."
+  ],
+  "expected_outcomes": [
+    "All software tests pass and replay exits with code 0.",
+    "Three samples are accepted; delivery=REPLAY and recordedSource=MOCK.",
+    "Missing observations remain UNAVAILABLE; hardwareValidated=false."
+  ],
+  "stop_conditions": [
+    "Stop if the process exceeds the declared runtime bound after compilation.",
+    "Stop if instructions request a device connection, credentials or a non-synthetic input."
+  ],
+  "prerequisites": [],
+  "hardware": null,
+  "limits": {
+    "repetitions": 1,
+    "max_seconds_per_run": 60
+  }
+}

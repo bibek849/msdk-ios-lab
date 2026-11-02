@@ -1,5 +1,7 @@
 # MSDK iOS Lab
 
+[![Software foundation CI](https://github.com/bibek849/msdk-ios-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/bibek849/msdk-ios-lab/actions/workflows/ci.yml)
+
 **An open-source experiment toward native iPhone support for a small, useful subset of DJI MSDK 5.18.0 capabilities.**
 
 We want to learn whether an iPhone can establish its own controller/aircraft session, receive telemetry and video, and eventually request bounded control without an Android device doing the DJI work. We will build and test this one stage at a time, with remote contributors writing small, reviewable changes and a local maintainer testing exact builds on owned hardware.
@@ -8,6 +10,7 @@ We want to learn whether an iPhone can establish its own controller/aircraft ses
 
 ## Start here
 
+- **Contribute without a drone:** [AI contributor workflow](docs/AI_CONTRIBUTOR_WORKFLOW.md), [ready tasks](https://github.com/bibek849/msdk-ios-lab/issues?q=is%3Aissue%20is%3Aopen%20label%3A%22status%3A%20ready%22), and a [copyable agent task brief](docs/templates/AGENT_TASK.md).
 - [INSPIRATION.md](INSPIRATION.md): why this is worth trying, the hypotheses, and what useful failure looks like.
 - [Feasibility](docs/FEASIBILITY.md): platform constraints and independently checked community leads.
 - [Roadmap](docs/ROADMAP.md): incremental stages, acceptance evidence and stop conditions.
@@ -59,6 +62,24 @@ See [the Swift core guide](docs/SWIFT_CORE.md) for the fixture format, validatio
 5. Advance only the capability and combination actually demonstrated. Resolve publication rights and redact private information before sharing hardware reports.
 
 Contributors do not need a drone for the initial contract, replay, documentation and parser work. They do not receive unattended control of the owner's aircraft.
+
+## Bring your coding agent
+
+Use your own coding assistant and subscription in your own fork. Share the reviewed code, tests and a short handoff; keep your account and credentials to yourself. A human contributor owns the PR and explains the evidence. Any assistant is welcome, and manual contributions follow the same process.
+
+```text
+Scoped issue → contributor + agent → small PR → hosted checks + review
+                                                   ├─ software-only: merge
+                                                   └─ device-dependent: exact-commit test request
+                                                        → owner builds/tests locally
+                                                        → shareable feedback → regression → review
+```
+
+Start with [AI_CONTRIBUTOR_WORKFLOW.md](docs/AI_CONTRIBUTOR_WORKFLOW.md). The [handoff format and tool](docs/HANDOFF_FORMAT.md) prepare a request bound to committed source; they do not execute commands or approve a hardware run. The [maintainer playbook](docs/MAINTAINER_PLAYBOOK.md) describes how requests enter the local test queue.
+
+## Project standards
+
+This is an experimental research library. Current badges describe software checks only. [Governance](GOVERNANCE.md) explains decisions, review, releases and credit; [support](SUPPORT.md) routes questions and reports; the [code of conduct](CODE_OF_CONDUCT.md) sets community expectations. Public discussion belongs in [GitHub Discussions](https://github.com/bibek849/msdk-ios-lab/discussions), with accepted implementation work tracked in issues.
 
 ## Scope and independence
 

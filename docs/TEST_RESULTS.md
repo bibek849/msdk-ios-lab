@@ -1,5 +1,29 @@
 # Test results
 
+## AI contributor workflow — 2026-11-02
+
+Scope: contributor documentation, metadata-only handoffs, repository review workflow and CI. No DJI source, aircraft transport, iOS UI or flight behavior changed.
+
+From the repository root, using Apple Swift 6.4 and Python 3.14.6 on arm64 macOS:
+
+```sh
+make check
+```
+
+**PASS:** 16 Swift tests, 11 Python handoff tests, local Markdown/JSON checks and synthetic replay (three accepted samples). The command ran with normal development-cache access; no environment workaround was needed in this run. The Python-only verification was also run independently:
+
+```sh
+python3 -m unittest discover -s tools/tests -v
+python3 tools/check_repository.py
+git diff --check
+```
+
+**PASS:** the handoff suite covers exact commit/checksum identity, dirty tracked files, untracked specifications, overwrite refusal, excluded untracked/private files, no execution of supplied command strings, path/symlink boundaries, malformed/oversized specifications and draft hardware requests. Command-stage hardware requests are rejected. Metadata validity never establishes operator approval or safety.
+
+Independent review found a macOS case-insensitivity problem with a proposed `tests/` directory beside Swift's `Tests/`. The final Python tests live under `tools/tests/`, and all commands use that exact path. No further blocking review findings remained.
+
+The updated CI adds a separate handoff test/export job, keeps read-only permissions and hosted runners, and pins checkout v7.0.1 by commit. Its check runs record Linux results separately from this local evidence. Hardware, signed iPhone builds, DJI access, Unity and headset testing remain **NOT RUN** for this change.
+
 ## Initial foundation — 2026-11-02
 
 Scope: original Swift contracts, synthetic fixtures and project documentation only. No DJI SDK artifact is included or executed. Prior results from other projects do not count here.

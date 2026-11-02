@@ -14,6 +14,8 @@
 
 Use [templates/HARDWARE_RUN.md](templates/HARDWARE_RUN.md) for each run. Store private reports outside the public repository; ignore rules are a convenience, not a guarantee against accidental publication.
 
+Contributors using AI agents follow [AI_CONTRIBUTOR_WORKFLOW.md](AI_CONTRIBUTOR_WORKFLOW.md). The [metadata handoff tool](HANDOFF_FORMAT.md) binds a software/read-only request to committed source; the [maintainer playbook](MAINTAINER_PLAYBOOK.md) handles review, queue state and returned [feedback](templates/TEST_FEEDBACK.md). A generated handoff is not CI evidence or operator approval. Confirm the actual source revision and locally built artifact again before a run.
+
 ## Before a hardware slot
 
 - Record the source commit, dependency lock/pin, build environment, package identifier and artifact digest. Hardware testing must use that exact artifact.
