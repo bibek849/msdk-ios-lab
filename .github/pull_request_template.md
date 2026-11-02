@@ -1,20 +1,27 @@
-## Question and scope
+## Problem and scope
 
-Backlog ID and roadmap gate:
-What does this change establish?
+Issue / backlog ID / roadmap gate:
+Concrete behavior before and after:
+Acceptance criteria covered and limits:
 
-## Verification
+## Evidence
 
-Exact commands, environment and results:
-Hardware/iOS-device checks: NOT RUN unless evidence is explicitly recorded.
+Exact commands, environment and results (including failures):
+CI URL and checked source/merge revision:
+iOS/device checks: NOT RUN unless an identified run exists.
 
-## Provenance
+## Contribution and provenance
 
-Original work or source/license references:
-No secrets, private captures or unapproved vendor material included:
+Human submitting/reviewing this change:
+Material agent assistance (if any) and what you personally verified:
+Original work / source and license references:
 
-## Hardware handoff (if applicable)
+- [ ] I read and can explain the diff; no private prompts, credentials or unapproved vendor material are included.
+- [ ] MOCK / REPLAY / LIVE and unavailable capability states remain accurate.
 
-Exact commit/artifact SHA-256, build instructions and bounded procedure:
-Pass/fail criteria, stop conditions and rollback:
-Use docs/templates/HARDWARE_RUN.md; review publication rights before attaching reports.
+## Completion path
+
+- [ ] Software-only; no device test needed for this claim.
+- [ ] Hardware-dependent; the device gate remains open.
+
+For a device request: link the committed experiment specification and metadata handoff; name the full source SHA, build instructions, expected observations, time bounds and abort conditions. The maintainer records the locally built artifact hash and run result separately. Use docs/templates/HARDWARE_RUN.md and review publication rights before attaching reports.
