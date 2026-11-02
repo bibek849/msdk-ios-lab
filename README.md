@@ -15,6 +15,7 @@ We want to learn whether an iPhone can establish its own controller/aircraft ses
 - [Feasibility](docs/FEASIBILITY.md): platform constraints and independently checked community leads.
 - [Roadmap](docs/ROADMAP.md): incremental stages, acceptance evidence and stop conditions.
 - [Contributor backlog](docs/CONTRIBUTOR_BACKLOG.md): scoped tasks for remote developers.
+- [Engineering standard](docs/ENGINEERING_STANDARD.md): language choices, native media, interoperability, dependency and measured-performance requirements.
 - [Hardware testing](docs/HARDWARE_TESTING.md): contributor-to-maintainer handoff and test procedure.
 - [Compatibility](docs/COMPATIBILITY.md): combinations and capabilities, with unknowns retained.
 - [Test results](docs/TEST_RESULTS.md): commands actually run; hardware work remains separate.

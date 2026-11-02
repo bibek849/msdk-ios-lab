@@ -21,6 +21,18 @@ Checked **2026-11-02**. These are research references, not bundled dependencies.
 | A2 | [USBDriverKit](https://developer.apple.com/documentation/usbdriverkit) and [Creating drivers for iPadOS](https://developer.apple.com/documentation/driverkit/creating-drivers-for-ipados) | Mac and M-series iPad support; not an iPhone transport solution. |
 | A3 | [Apple DTS response: custom USB device on iPhone](https://developer.apple.com/forums/thread/802640) | Distinguishes External Accessory streams from raw USB; states that general raw USB interface access is unavailable on iOS. |
 
+## Official engineering references
+
+Checked 2026-11-02 for [the engineering standard](ENGINEERING_STANDARD.md). These references describe platform mechanisms; language defaults and performance budgets are this project's decisions.
+
+| ID | Source | Narrow use |
+|---|---|---|
+| E1 | [Swift/C++ project setup](https://www.swift.org/documentation/cxx-interop/project-build-setup/) and [interop guide](https://www.swift.org/documentation/cxx-interop/) | Build/client constraints, headers/module maps, lifetime/copy considerations; check features against the pinned compiler. |
+| E2 | [VideoToolbox](https://developer.apple.com/documentation/videotoolbox) and [actual hardware decoder selection](https://developer.apple.com/documentation/videotoolbox/kvtdecompressionpropertykey_usinghardwareacceleratedvideodecoder) | Native codec integration and querying whether hardware decode is in use. |
+| E3 | [Network framework](https://developer.apple.com/documentation/network) and [choosing a networking API](https://developer.apple.com/documentation/technotes/tn3151-choosing-the-right-networking-api) | Apple transport/security APIs and URLSession distinction; no claim that transport alone authenticates peers. |
+| E4 | [Android JNI tips](https://developer.android.com/ndk/guides/jni-tips) | Narrow native boundaries and minimizing marshalling overhead. |
+| E5 | [Swift performance guidance](https://www.swift.org/documentation/server/guides/performance.html) | Release-mode measurement and profiling; server-specific implementation examples are not imported as iOS recommendations. |
+
 ## Community research leads
 
 | ID | Pinned source | License inspected | Use and limit |

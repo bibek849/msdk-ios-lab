@@ -43,6 +43,8 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [the source register](d
 
 ## Engineering boundaries
 
+Follow [the engineering standard](docs/ENGINEERING_STANDARD.md). Use Swift 6 for the default iOS/core implementation, isolate justified C++20 work, retain Kotlin for the Android reference and Python for development tools. A new language/framework/dependency needs a short reviewed decision. Any performance claim needs a reproducible [before/after report](docs/templates/PERFORMANCE_REPORT.md); ordinary documentation changes do not need benchmarks.
+
 Unknown readings stay unknown. Include units, session identity, sequence and freshness. Keep replay delivery separate from recorded source. Native and Android-backed adapters must identify themselves. Receiving bytes, parsing a message, accepting a request and observing aircraft behavior are different events.
 
 Future control work requires one authority owner, bounded and expiring intents, conflict/replay/staleness rejection, physical RC takeover and explicit rearm. Pairing and reconnection never grant authority. Telemetry, video, storage and network services must not block a future command loop. This repository currently has no executable flight path.

@@ -1,6 +1,8 @@
 # MSDK iOS Lab contributor guidance
 
 - Read README.md, docs/FEASIBILITY.md and the relevant docs/ROADMAP.md gate before changing code.
+- Follow docs/ENGINEERING_STANDARD.md: Swift 6 by default, isolated C++20 only for justified native work, Kotlin for the Android reference and Python for tooling. Do not add languages, frameworks or dependencies without the documented decision and portability evidence.
+- Performance claims require a reproducible optimized-build baseline and measurements; language choice, mocks or CI alone do not qualify hardware performance. Use docs/templates/PERFORMANCE_REPORT.md for rate-sensitive work.
 - Preserve the native iPhone research goal. Android reference or relay success never proves a native port.
 - Target MSDK 5.18.0 explicitly. Keep upstream artifact versions, source commits and license boundaries in docs/SOURCES.md and provenance.json.
 - This is independent original work. Do not copy Skywarden source, secrets, media, private hardware reports or Git history.
