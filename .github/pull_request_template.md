@@ -19,6 +19,12 @@ Original work / source and license references:
 - [ ] I read and can explain the diff; no private prompts, credentials or unapproved vendor material are included.
 - [ ] MOCK / REPLAY / LIVE and unavailable capability states remain accurate.
 
+## Engineering choices
+
+Language/layer and compliance with docs/ENGINEERING_STANDARD.md:
+New language/framework/dependency decision and version pins (or none):
+Rate-sensitive changes: queue/memory bounds and performance report; otherwise not applicable:
+
 ## Completion path
 
 - [ ] Software-only; no device test needed for this claim.

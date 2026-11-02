@@ -1,5 +1,18 @@
 # Test results
 
+## Engineering standard — 2026-11-02
+
+Scope: language/platform/performance policy, contributor instructions, review fields, primary references and a performance-report template. No runtime code, package manifest, compiler baseline, dependency or device configuration changed.
+
+```sh
+python3 tools/check_repository.py
+git diff --check
+```
+
+**PASS:** 29 Markdown files, 86 local link targets and 3 JSON files; no whitespace errors. An independent policy review checked language/interoperability limits, Swift 6.0 compatibility, media queue rules and authority boundaries. The final wording explicitly distinguishes optional cloud failures from local control-link/stale-input revocation.
+
+The required hosted workflow runs the existing software suites separately for the PR. No new local runtime tests were needed for this documentation-only change. Benchmarks, hardware performance, signed iPhone builds, DJI, Unity and headset checks are **NOT RUN**. The new report template records no measurements and establishes no speed improvement.
+
 ## AI contributor workflow — 2026-11-02
 
 Scope: contributor documentation, metadata-only handoffs, repository review workflow and CI. No DJI source, aircraft transport, iOS UI or flight behavior changed.
