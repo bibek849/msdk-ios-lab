@@ -1,0 +1,33 @@
+{
+  "project": "MSDK iOS Lab",
+  "recorded_on": "2026-11-02",
+  "license": "MIT",
+  "bundled_vendor_sdk": false,
+  "runtime_dependencies": [],
+  "reference_target": {
+    "name": "DJI Mobile SDK for Android V5",
+    "version": "5.18.0",
+    "repository": "https://github.com/dji-sdk/Mobile-SDK-Android-V5",
+    "tag": "V5.18.0",
+    "commit": "07d37cfdff865cdda9d523b00b723c9984575f8f",
+    "purpose": "Research reference only; no SDK artifacts bundled",
+    "artifact_checksums": null,
+    "artifact_status": "NOT ACQUIRED by this project; record hashes before SDK-dependent evaluation"
+  },
+  "swift_tools_minimum": "6.0",
+  "ci": {
+    "checkout_commit": "11bd71901bbe5b1630ceea73d27597364c9af683",
+    "swift_image": "swift:6.0.3-jammy@sha256:95f6ef898992dc840b35517e780f6f6db9661432775ab0b33cc0a531ea749bdb",
+    "runner": "ubuntu-24.04",
+    "runner_note": "Hosted runner image updates independently; Swift container and checkout action pinned"
+  },
+  "hardware_target": {
+    "phone": "iPhone 15 Pro Max",
+    "ios_build": null,
+    "controller": "DJI RC-N3",
+    "controller_firmware": null,
+    "aircraft": "DJI Mini 4 Pro",
+    "aircraft_firmware": null,
+    "project_validation": "NOT RUN"
+  }
+}

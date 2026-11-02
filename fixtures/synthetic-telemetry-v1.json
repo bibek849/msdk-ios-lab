@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "synthetic": true,
+  "sessionID": "synthetic-bench-001",
+  "events": [
+    {
+      "receivedAtMilliseconds": 0,
+      "nowMilliseconds": 10,
+      "packet": {
+        "schemaVersion": 1,
+        "sessionID": "synthetic-bench-001",
+        "sequence": 0,
+        "source": "MOCK",
+        "sourceTimestampUnixMilliseconds": null,
+        "altitudeRelativeMeters": null,
+        "batteryPercent": null
+      }
+    },
+    {
+      "receivedAtMilliseconds": 100,
+      "nowMilliseconds": 120,
+      "packet": {
+        "schemaVersion": 1,
+        "sessionID": "synthetic-bench-001",
+        "sequence": 1,
+        "source": "MOCK",
+        "sourceTimestampUnixMilliseconds": null,
+        "altitudeRelativeMeters": 0.0,
+        "batteryPercent": 87.0
+      }
+    },
+    {
+      "receivedAtMilliseconds": 200,
+      "nowMilliseconds": 225,
+      "packet": {
+        "schemaVersion": 1,
+        "sessionID": "synthetic-bench-001",
+        "sequence": 2,
+        "source": "MOCK",
+        "sourceTimestampUnixMilliseconds": null,
+        "altitudeRelativeMeters": -1.25,
+        "batteryPercent": 86.5
+      }
+    }
+  ]
+}
