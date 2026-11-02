@@ -2,7 +2,13 @@
 
 Adopted **2026-11-02** for MSDK iOS Lab. This is the project's implementation policy, informed by established platform practices; it is not a claim that one language is universally fastest. Apply it alongside [the roadmap](ROADMAP.md) and [feasibility gates](FEASIBILITY.md). No language choice supplies missing SDK rights, controller access or protocol knowledge.
 
-## Language choices
+## Reuse before language selection
+
+The [porting policy](PORTING_POLICY.md) takes priority over language preferences. First determine whether the next iOS capability needs the component, whether we may use it, and whether it already works on the target. Preserve compatible implementations and their language. Prefer rebuilding authorized source unchanged, then a thin platform adapter; port or replace only the smallest required incompatible part with evidence. Unknown compatibility requires investigation. Do not translate SDK classes or replace working code just to standardize on Swift or C++.
+
+The defaults below govern **new code that is actually needed**. Reusing another language still requires an explicit toolchain, license, iOS support and maintenance decision; preservation does not waive compatibility or safety checks. Use a [component decision](templates/COMPONENT_DECISION.md) in the task or PR to record the choice without creating paperwork for unrelated documentation fixes.
+
+## Language choices for new required code
 
 | Layer | Default | Reason and boundary |
 |---|---|---|
@@ -20,7 +26,7 @@ Rust may be proposed for a specific component when its ownership model, library 
 ## Architecture and interoperability
 
 1. Keep portable contracts/parsers separate from Apple accessory, network and media adapters. Depend on small interfaces and supply original synthetic implementations for tests. MOCK, REPLAY and LIVE remain explicit.
-2. Prefer the existing Swift module before adding another language. For a new language, framework, native dependency or cross-process boundary, record a short architecture decision: problem, alternatives, evidence, ownership/build cost, licenses, test targets and migration plan. The maintainer reviews that decision in the PR; routine work within the defaults needs no extra approval ceremony.
+2. Prefer compatible, permitted reuse; for genuinely new functionality, prefer the existing Swift module before adding another language. For a new language, framework, native dependency or cross-process boundary, record a short architecture decision: problem, alternatives, evidence, ownership/build cost, licenses, test targets and migration plan. The maintainer reviews that decision in the PR; routine work within the defaults needs no extra approval ceremony.
 3. At a native boundary, document who allocates/releases each buffer or handle, how long borrowed memory lives, callback thread/queue, cancellation, errors and maximum lengths. Never let C++ exceptions unwind into Swift/C/JNI. Do not expose STL containers, native object layouts or allocator ownership across a C ABI. Treat raw pointers as scoped implementation details with checked bounds.
 4. Batch related data where useful and minimize repeated language crossings and copies. Measure FFI overhead before moving an otherwise small operation. Keep Android JNI boundaries narrow; Android's [official guidance](SOURCES.md#official-engineering-references) identifies marshalling cost as a design concern.
 5. Do not expose C++ interoperability through the public Swift product without checking downstream build flags and compatibility. Swift's interoperability documentation describes client/build constraints; C-compatible headers are the initial default, not a promise of an automatically stable ABI. Version any exported native contract explicitly.
@@ -62,7 +68,7 @@ For video, separate ingress, decode and presentation timing. Advancing frame ide
 
 ## Required review evidence
 
-- State the component's language/layer and any departure from these defaults.
+- State why the next iOS capability needs the component, the reuse/adapter/port decision and evidence of any incompatibility. Then state its language/layer and any departure from these defaults.
 - Include changed-layer correctness tests. Untrusted byte parsers need malformed, fragmented, truncated and boundary cases plus fuzzing. Unsafe/native FFI paths need ownership/lifetime, error propagation and concurrency checks plus applicable sanitizers. Use supported targets and mark unavailable runs NOT RUN before making readiness claims.
 - Use golden cross-language fixtures when introducing a second implementation. Keep wire/API versions and clients in sync.
 - Include a before/after performance report when claiming speed, latency, memory or energy improvement. A rewrite without measurements is an architectural proposal, not an optimization result.

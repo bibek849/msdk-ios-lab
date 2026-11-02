@@ -17,6 +17,8 @@ See [the backlog](CONTRIBUTOR_BACKLOG.md). LAB-004 and LAB-005 are starting poin
 
 ## The working loop
 
+For ongoing assignments and feedback, use the [GitHub event workflow](AGENT_EVENT_WORKFLOW.md) and [opt-in template](templates/AGENT_SUBSCRIPTION.md). Start with native notifications or your own supported scheduled checks. A GitHub connection can supply repository access; event delivery and permission to run a coding task must also be configured. There is no project-wide listener running today.
+
 ```mermaid
 flowchart LR
     A[Small issue and task brief] --> B[Contributor plus AI agent]
@@ -33,7 +35,7 @@ flowchart LR
 
 1. **Pick and coordinate.** Comment on an existing issue with your proposed scope and environment. Check for another active contributor before starting overlapping implementation. The maintainer can narrow the task or record an owner. Start with one active task and one small PR.
 2. **Fork and reproduce the baseline.** Work on a topic branch in your fork. Read `AGENTS.md`, `README.md`, `CONTRIBUTING.md` and the relevant stage. Run the available checks before editing. If your agent cannot run them, say so and use CI or your own terminal; do not let it invent results.
-3. **Give the agent a bounded task.** Use [the agent task template](templates/AGENT_TASK.md). Specify the relevant files, expected behavior, tests, forbidden scope and stopping point. Read the proposed changes yourself. Ask for a concise handoff describing decisions, files, commands, results and remaining uncertainty.
+3. **Give the agent a bounded task.** Use [the agent task template](templates/AGENT_TASK.md). Apply the [reuse-first policy](PORTING_POLICY.md): establish why a component is needed, preserve compatible code and document any actual iOS incompatibility before porting it. Specify the relevant files, expected behavior, tests, forbidden scope and stopping point. Read the proposed changes yourself. Ask for a concise handoff describing decisions, files, commands, results and remaining uncertainty.
 4. **Open a draft PR early enough to avoid duplicate work.** State the task ID and question, then update the description as the implementation settles. Separate tests run locally, CI results and checks not run. Explain AI assistance briefly; full chat histories, hidden reasoning, subscription details and private prompts are unnecessary.
 5. **Respond to review.** The human contributor must be able to explain the behavior and sources. Correct tests that merely restate an implementation assumption. An unsupported API invented by an agent is a defect to resolve, not a hardware experiment to send to the owner.
 6. **Request a hardware slot only when needed.** After software review, commit the experiment description and freeze the requested revision. Prepare the metadata handoff below. Record both the PR head SHA and the commit tested by CI when they differ; a PR workflow may test a merge result. The maintainer reviews the source and build path, builds/signs locally and records the actual artifact identity before using a device. A PR, green CI or complete handoff is not device approval.

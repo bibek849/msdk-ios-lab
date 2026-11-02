@@ -12,6 +12,7 @@ Fill this brief from an agreed issue, then give it to your agent. Public reposit
 - Environment available: Linux/cloud Swift / Mac Xcode / edits only / other:
 - Scope: software-only / hardware-dependent proposal:
 - Relevant files and public references:
+- Component decision: required iOS capability, reuse/rebuild/adapter/minimal port/defer, evidence and link (or not applicable):
 - Language/layer under ENGINEERING_STANDARD.md; approved exceptions, if any:
 - Performance budget/report required for this task, or not applicable:
 - Required behavior and acceptance criteria:
@@ -23,11 +24,11 @@ Fill this brief from an agreed issue, then give it to your agent. Public reposit
 
 ## Paste-ready agent instruction
 
-> Read AGENTS.md, README.md, CONTRIBUTING.md, docs/ENGINEERING_STANDARD.md, docs/AI_CONTRIBUTOR_WORKFLOW.md and the relevant roadmap stage. Work only on the agreed task above. Inspect the current implementation and tests before editing. Reproduce the baseline where the environment supports it.
+> Read AGENTS.md, README.md, CONTRIBUTING.md, docs/PORTING_POLICY.md, docs/ENGINEERING_STANDARD.md, docs/AI_CONTRIBUTOR_WORKFLOW.md and the relevant roadmap stage. Work only on the agreed task above. Inspect the current implementation and tests before editing. Reproduce the baseline where the environment supports it.
 >
 > Implement the smallest coherent change that answers the question. Add a meaningful regression for changed behavior and keep the existing provenance, units, missing-value, session and freshness boundaries. Do not add device commands, network services, vendor dependencies or new features unless they are explicitly in scope. Verify current API claims against primary sources when needed.
 >
-> Use the standard's language and platform defaults. Do not rewrite working code or add an FFI/framework dependency merely because another language is described as faster. Identify a bottleneck and measure an optimized-build baseline before claiming a performance improvement; document queue bounds and ownership for rate-sensitive work.
+> Preserve compatible, permitted code in its existing language. Prove the component is needed, then prefer unchanged rebuild or a thin adapter before porting only a demonstrated incompatible part. Unknown compatibility calls for an investigation, not a rewrite. Use the standard's language/platform defaults for necessary new code. Identify a bottleneck and measure an optimized-build baseline before claiming a performance improvement; document queue bounds and ownership for rate-sensitive work.
 >
 > Run available checks and report exact commands, environment and outcomes. Mark unavailable checks NOT RUN. Do not infer hardware success from compilation, mocks, replay or CI. If progress depends on hardware or unavailable permission, stop that dependent work and return the smallest concrete question; finish independent software work that is still within scope.
 >

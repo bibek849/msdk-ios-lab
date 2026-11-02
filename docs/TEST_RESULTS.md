@@ -1,5 +1,34 @@
 # Test results
 
+## Reuse policy and agent events — 2026-11-02
+
+Scope: reuse-first component decisions, contributor instructions and event-subscription design. No runtime, dependency, CI configuration, installed scheduler or hardware integration changed.
+
+```sh
+python3 tools/check_repository.py
+git diff --check
+```
+
+**PASS:** 33 Markdown files, 125 local link targets and 3 JSON files; no whitespace errors. The checker validates local targets and JSON syntax, not external URLs, anchors or event delivery. Independent review found no blocking issue; its wording correction now makes the CONTRIBUTING language defaults apply to necessary new code.
+
+The documented read-only inbox commands were run against the public repository with the existing maintainer account:
+
+```sh
+gh issue list --repo bibek849/msdk-ios-lab --assignee @me --state all --limit 100 \
+  --json number,title,state,labels,assignees,updatedAt,url
+gh pr list --repo bibek849/msdk-ios-lab --author @me --state all --limit 100 \
+  --json number,title,state,headRefOid,reviewDecision,statusCheckRollup,updatedAt,url
+gh issue view 4 --repo bibek849/msdk-ios-lab \
+  --json number,title,body,state,assignees,labels,comments,updatedAt,url
+gh pr view 8 --repo bibek849/msdk-ios-lab \
+  --json number,title,body,state,headRefOid,comments,reviews,reviewRequests,statusCheckRollup,url
+gh api --paginate repos/bibek849/msdk-ios-lab/pulls/8/comments
+```
+
+**PASS:** all five commands exited 0 with parseable JSON. At that time the account had no assigned issues, two authored PRs, issue 4 and PR 8 were readable, and PR 8 had no inline review comments. This verifies command syntax and this account's read access only. It does not test another contributor's authentication, pagination at scale, event delivery, wake-up, cursor persistence or unattended execution.
+
+No runtime tests were rerun locally for this documentation-only change; the required hosted workflow verifies the unchanged software suites on the PR separately. GitHub App/webhook deployment, automated agent delivery, native iOS compilation/execution, hardware, DJI and performance checks are **NOT RUN** for this change. No hardware compatibility or reuse of vendor internals is established.
+
 ## Engineering standard — 2026-11-02
 
 Scope: language/platform/performance policy, contributor instructions, review fields, primary references and a performance-report template. No runtime code, package manifest, compiler baseline, dependency or device configuration changed.

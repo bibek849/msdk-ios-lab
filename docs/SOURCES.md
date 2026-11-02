@@ -33,6 +33,17 @@ Checked 2026-11-02 for [the engineering standard](ENGINEERING_STANDARD.md). Thes
 | E4 | [Android JNI tips](https://developer.android.com/ndk/guides/jni-tips) | Narrow native boundaries and minimizing marshalling overhead. |
 | E5 | [Swift performance guidance](https://www.swift.org/documentation/server/guides/performance.html) | Release-mode measurement and profiling; server-specific implementation examples are not imported as iOS recommendations. |
 
+## Official collaboration references
+
+Checked 2026-11-02 for [the agent event workflow](AGENT_EVENT_WORKFLOW.md). Provider features and permissions can change; these references do not establish that an integration is enabled for this repository or a contributor's account.
+
+| ID | Source | Narrow use |
+|---|---|---|
+| W1 | [GitHub assignment rules](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/assigning-issues-and-pull-requests-to-other-github-users) | External contributors who comment can be assigned without upstream write access. |
+| W2 | [Webhook event reference](https://docs.github.com/en/webhooks/webhook-events-and-payloads), [signature verification](https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries), [failed deliveries](https://docs.github.com/en/webhooks/using-webhooks/handling-failed-webhook-deliveries) | Optional App event mapping, authentication and recovery requirements. |
+| W3 | [REST best practices](https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api), [Notifications API](https://docs.github.com/en/rest/activity/notifications) | Polling/rate-limit guidance and notification-token limitations. |
+| W4 | [OpenAI scheduled tasks](https://learn.chatgpt.com/docs/automations?surface=app), [GitHub integration](https://learn.chatgpt.com/docs/third-party/github), [authentication](https://learn.chatgpt.com/docs/auth) | Product-specific PR triggers, review, local schedules and subscription/API authentication distinctions; availability must be checked per account. |
+
 ## Community research leads
 
 | ID | Pinned source | License inspected | Use and limit |

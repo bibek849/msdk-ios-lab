@@ -6,6 +6,10 @@ Start with the [README](README.md), [feasibility assessment](docs/FEASIBILITY.md
 
 ## Work in small, reviewable steps
 
+For implementation work, apply the [reuse-first policy](docs/PORTING_POLICY.md): explain the required iOS capability and reuse existing compatible code before proposing a port. Use the [component decision template](docs/templates/COMPONENT_DECISION.md) when introducing or replacing a component. Language preferences apply to necessary new code, not blanket SDK translation.
+
+To follow assignments, reviews and owner-run test feedback, use the [agent event workflow](docs/AGENT_EVENT_WORKFLOW.md). Each contributor opts in with their own GitHub/agent account; no central subscription or hardware access is required.
+
 Fork this repository and create a topic branch. Pick a [backlog ID](docs/CONTRIBUTOR_BACKLOG.md), explain one question, and submit one coherent change. Use an issue for coordination before substantial overlapping work; a discussion does not grant access to the owner's hardware. No contributor needs credentials, aircraft serials or private flight logs to work on synthetic tests.
 
 ```sh
@@ -43,7 +47,7 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [the source register](d
 
 ## Engineering boundaries
 
-Follow [the engineering standard](docs/ENGINEERING_STANDARD.md). Use Swift 6 for the default iOS/core implementation, isolate justified C++20 work, retain Kotlin for the Android reference and Python for development tools. A new language/framework/dependency needs a short reviewed decision. Any performance claim needs a reproducible [before/after report](docs/templates/PERFORMANCE_REPORT.md); ordinary documentation changes do not need benchmarks.
+Follow [the engineering standard](docs/ENGINEERING_STANDARD.md). Preserve compatible, permitted code; use Swift 6 for necessary new iOS/core code, isolate justified C++20 work, retain Kotlin for the Android reference and Python for development tools. A new language/framework/dependency needs a short reviewed decision. Any performance claim needs a reproducible [before/after report](docs/templates/PERFORMANCE_REPORT.md); ordinary documentation changes do not need benchmarks.
 
 Unknown readings stay unknown. Include units, session identity, sequence and freshness. Keep replay delivery separate from recorded source. Native and Android-backed adapters must identify themselves. Receiving bytes, parsing a message, accepting a request and observing aircraft behavior are different events.
 
