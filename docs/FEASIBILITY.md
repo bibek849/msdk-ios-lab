@@ -1,6 +1,6 @@
 # Native iOS feasibility
 
-Research checkpoint: **2026-11-02**. Target: **MSDK 5.18.0 capabilities on an iPhone 15 Pro Max**, initially with the owner's Mini 4 Pro and RC-N3. The phone's exact iOS version, provisioning, cable and controller/aircraft firmware still need recording. No project hardware test has run.
+Research checkpoint: **2026-11-02**; native-access dossier **2026-11-03**. Target: **MSDK 5.18.0 capabilities on an iPhone 15 Pro Max**, initially with the owner's Mini 4 Pro and RC-N3. The phone's exact iOS version, provisioning, cable and controller/aircraft firmware still need recording. No project hardware test has run.
 
 The central experiment is native iPhone interoperability. We will test whether a useful subset can be implemented through a permitted direct connection, and whether any narrowly scoped native-library compatibility work is viable. We will not call a Swift package, replay demonstration or Android relay a completed iOS port.
 
@@ -11,6 +11,13 @@ DJI publishes Android V5.18.0 and an open sample that depends on separate SDK ar
 The SDK and sample have different terms. DJI's SDK EULA restricts porting and reverse engineering subject to its stated exceptions, and also addresses disclosure of SDK evaluation results. Stage 0 must establish applicable permissions and publication rights; original project code can proceed independently. Do not import vendor binaries or present a clean-room process as automatic legal clearance. [D2, D4](SOURCES.md#official-dji-sources)
 
 Apple's public External Accessory model is manufacturer-supported accessory communication, not arbitrary USB endpoints. General iPhone raw USB access is not established by USB-C. USBDriverKit is a separate Mac/M-series-iPad option, and success there would not close the iPhone gate. [A1–A3](SOURCES.md#official-apple-sources)
+
+The [native access dossier](NATIVE_ACCESS_DOSSIER.md) (2026-11-03) adds three findings:
+- **Apple:** only one session can exist per accessory and protocol; the protocol list is empty until the accessory authenticates; and the manufacturer controls third-party app access ([A1, A4–A6](SOURCES.md#official-apple-sources)).
+- **DJI protocol names:** DJI's 4.16.2 iOS samples publish protocol names but no message specification ([D7](SOURCES.md#official-dji-sources)).
+- **App Store route:** DJI's MFi route for App Store release says nothing about development builds ([D9](SOURCES.md#official-dji-sources)).
+
+The dossier finds no public NO-GO for the proposed wired External Accessory observation. A probe without application-level writes is **BLOCKED** on the owner's inventory and rights decisions; it makes no claim of zero OS or accessory traffic. Manufacturer access and target validation remain open, and aircraft-session meaning stays **BLOCKED**. [ADR 0002](decisions/0002-native-transport-component.md) records the component decision and the minimum M4/M5 plan.
 
 ## Why native experiments remain worthwhile
 
