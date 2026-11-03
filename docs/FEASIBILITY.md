@@ -17,7 +17,7 @@ The [native access dossier](NATIVE_ACCESS_DOSSIER.md) (2026-11-03) adds three fi
 - **DJI protocol names:** DJI's 4.16.2 iOS samples publish protocol names but no message specification ([D7](SOURCES.md#official-dji-sources)).
 - **App Store route:** DJI's MFi route for App Store release says nothing about development builds ([D9](SOURCES.md#official-dji-sources)).
 
-The dossier finds no public NO-GO for a write-free External Accessory probe. That probe is **BLOCKED** on the owner's inventory and rights decisions, and aircraft-session meaning stays **BLOCKED**. [ADR 0002](decisions/0002-native-transport-component.md) records the component decision and the minimum M4/M5 plan.
+The dossier finds no public NO-GO for the proposed wired External Accessory observation. A probe without application-level writes is **BLOCKED** on the owner's inventory and rights decisions; it makes no claim of zero OS or accessory traffic. Manufacturer access and target validation remain open, and aircraft-session meaning stays **BLOCKED**. [ADR 0002](decisions/0002-native-transport-component.md) records the component decision and the minimum M4/M5 plan.
 
 ## Why native experiments remain worthwhile
 

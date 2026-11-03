@@ -30,6 +30,15 @@ swift test
 
 A one-off script, not added to the repository, resolved every `#anchor` link in the changed files (0 broken). It also fetched each newly added external URL, and all returned HTTP 200 on 2026-11-03.
 
+**Revision 2 (2026-11-03):** wording scoped per the maintainer's [design guidance](https://github.com/bibek849/msdk-ios-lab/pull/16#issuecomment-6596777808).
+- The iOS V5 and reuse conclusions are limited to the sources reviewed.
+- Route exclusions are limited to this wired observation on the named target.
+- The API surface is described as non-exhaustive.
+- "No application-level writes" is defined so that it makes no zero-traffic claim.
+- ADR 0002's M4 rows follow the same guidance.
+
+The same checks passed again: 42 Markdown files, 231 local link targets and 6 JSON files; 16 Swift tests. All 50 `#anchor` links resolved, and every newly referenced URL returned HTTP 200.
+
 **NOT RUN:**
 - Any iOS build.
 - Any External Accessory probe.
