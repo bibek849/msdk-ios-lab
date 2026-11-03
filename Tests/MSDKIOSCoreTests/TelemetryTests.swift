@@ -43,6 +43,16 @@ final class TelemetryTests: XCTestCase {
         ])
     }
 
+    // Literal JSON keeps 64-bit clock values exact instead of routing them through NSNumber.
+    private func clockFixtureData(received: String, now: String) -> Data {
+        Data("""
+        {"schemaVersion": 1, "synthetic": true, "sessionID": "test", "events": [
+          {"receivedAtMilliseconds": \(received), "nowMilliseconds": \(now),
+           "packet": {"schemaVersion": 1, "sessionID": "test", "sequence": 0, "source": "MOCK"}}
+        ]}
+        """.utf8)
+    }
+
     func testUnknownMeasurementsRoundTripAsExplicitNull() throws {
         let data = try JSONEncoder().encode(packet())
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
@@ -82,6 +92,55 @@ final class TelemetryTests: XCTestCase {
     func testInvalidLocalClockRejected() throws {
         var session = try TelemetrySession(sessionID: "test", delivery: .replay)
         assertRejected(.invalidClock, session: &session, packet: packet(), received: 10, now: 9)
+    }
+
+    func testReceiverClockAtUInt64LimitsNeitherWrapsNorConsumesSequence() throws {
+        let max = UInt64.max
+        var session = try TelemetrySession(sessionID: "test", delivery: .replay)
+        // Reversed clocks at the top of the range are rejected before any subtraction.
+        assertRejected(.invalidClock, session: &session, packet: packet(sequence: 1),
+                       received: max, now: max - 1)
+        // The widest possible span is stale rather than wrapped into a small age.
+        assertRejected(.stale, session: &session, packet: packet(sequence: 1), received: 0, now: max)
+        assertRejected(.stale, session: &session, packet: packet(sequence: 1),
+                       received: max - 1_001, now: max)
+        let boundary = try session.accept(packet(sequence: 1), receivedAtMilliseconds: max - 1_000,
+                                          nowMilliseconds: max)
+        XCTAssertEqual(boundary.localAgeMilliseconds, 1_000)
+        let top = try session.accept(packet(sequence: 2), receivedAtMilliseconds: max,
+                                     nowMilliseconds: max)
+        XCTAssertEqual(top.localAgeMilliseconds, 0)
+        XCTAssertEqual(top.delivery, .replay)
+    }
+
+    func testConfiguredLocalAgeLimitsAtZeroAndUInt64Max() throws {
+        let max = UInt64.max
+        var strict = try TelemetrySession(sessionID: "test", delivery: .replay,
+                                          maxLocalAgeMilliseconds: 0)
+        assertRejected(.stale, session: &strict, packet: packet(), received: max - 1, now: max)
+        XCTAssertEqual(try strict.accept(packet(), receivedAtMilliseconds: max,
+                                         nowMilliseconds: max).localAgeMilliseconds, 0)
+        var unbounded = try TelemetrySession(sessionID: "test", delivery: .replay,
+                                             maxLocalAgeMilliseconds: max)
+        XCTAssertEqual(try unbounded.accept(packet(), receivedAtMilliseconds: 0,
+                                            nowMilliseconds: max).localAgeMilliseconds, max)
+        assertRejected(.invalidClock, session: &unbounded, packet: packet(sequence: 1),
+                       received: max, now: 0)
+    }
+
+    func testReplayFixturePreservesUInt64ClockAndRejectsOutOfRangeValues() throws {
+        let observations = try SyntheticReplay.decode(clockFixtureData(
+            received: "18446744073709550615", now: "18446744073709551615")).validate()
+        XCTAssertEqual(observations.map(\.localAgeMilliseconds), [1_000])
+        XCTAssertEqual(observations.first?.delivery, .replay)
+        XCTAssertNil(observations.first?.packet.altitudeRelativeMeters)
+        XCTAssertNil(observations.first?.packet.batteryPercent)
+        for (received, now) in [("0", "18446744073709551616"), ("-1", "0")] {
+            XCTAssertThrowsError(try SyntheticReplay.decode(
+                clockFixtureData(received: received, now: now))) { error in
+                XCTAssertTrue(error is DecodingError, "\(received)/\(now): \(error)")
+            }
+        }
     }
 
     func testDuplicateAndOlderSequencesRejected() throws {

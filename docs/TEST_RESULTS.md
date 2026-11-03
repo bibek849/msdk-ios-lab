@@ -1,5 +1,25 @@
 # Test results
 
+## LAB-004: receiver-clock UInt64 boundaries — 2026-11-03
+
+Scope: three original synthetic Swift tests in `Tests/MSDKIOSCoreTests/TelemetryTests.swift`; no production code, fixture file or contract change. Base: upstream `main` at `0fbc297df3c5db950efafa1aeb7ca05a64c5af1b` (written on `bd2b7f2`; the only intervening upstream change is the ledger entry below).
+
+Existing coverage exercised the local clock only near zero (stale at 1,001 ms, accepted at 1,000 ms, reversed at 10/9 ms) with the default limit. The uncovered family is receiver-clock arithmetic at the `UInt64` limits: `accept` must reject reversed clocks before subtracting, must not wrap a maximal span into a small age, must honor a configured `maxLocalAgeMilliseconds` of 0 or `UInt64.max`, and must not let these rejections consume the sequence. The replay path must also decode a near-maximum clock exactly and reject values outside `UInt64`.
+
+```sh
+swift --version
+swift test
+swift run msdk-ios-replay fixtures/synthetic-telemetry-v1.json
+python3 tools/check_repository.py
+git diff --check
+```
+
+**PASS: 19 Swift tests** (the prior 16 plus `testReceiverClockAtUInt64LimitsNeitherWrapsNorConsumesSequence`, `testConfiguredLocalAgeLimitsAtZeroAndUInt64Max` and `testReplayFixturePreservesUInt64ClockAndRejectsOutOfRangeValues`). Local environment: Swift 6.4.2 (`swift-6.4.2-RELEASE`, installed with swiftly), x86_64 Ubuntu 26.04.1 VM; CI pins 6.0.3. The replay CLI accepted the 3 checked-in synthetic samples with `delivery=REPLAY`; the repository check passed and `git diff --check` was clean.
+
+As a local sensitivity check, the validator was temporarily altered twice and restored before committing: removing the clock guard and using wrapping subtraction failed 2 of the new tests; recording the sequence before the clock/age checks failed 4 assertions. JSON values `18446744073709551616` and `-1` for replay clocks fail decoding with `DecodingError` under this toolchain's Foundation. These are host tests with a caller-simulated monotonic clock, not phone timing.
+
+**NOT RUN:** Swift 6.0.3 locally (left to hosted CI on the PR), iOS device build, DJI SDK, RC-N3 and aircraft tests. No hardware behavior is qualified by this change.
+
 ## First external contributor inbox — 2026-11-02 America/New_York
 
 **PASS: isolated receiver, signed GitHub delivery and authenticated client access** for `yout221496-ops`, GitHub numeric ID `351773451`. This is notification infrastructure evidence. Actual contributor Claude Code connection/tool invocation, scheduling and physical iPhone/DJI tests remain **NOT RUN** pending a separate result.
