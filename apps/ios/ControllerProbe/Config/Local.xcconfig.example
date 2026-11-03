@@ -1,0 +1,19 @@
+// Copy to Local.xcconfig (git-ignored) on the owner's Mac and keep it private.
+// Values here override Probe.xcconfig. Do not put "//" inside a value: xcconfig
+// treats it as a comment, so cite a decision as, for example, "issue 3 comment 123".
+
+PROBE_DEVELOPMENT_TEAM = TEAMID1234
+PROBE_BUNDLE_IDENTIFIER = com.example.yourteam.controllerprobe
+
+// BLOCKED (default), ENUMERATION_ONLY or SESSION_OBSERVATION.
+PROBE_RUN_MODE = BLOCKED
+
+// The single owner-reviewed accessory protocol name. It is also declared in the
+// app's UISupportedExternalAccessoryProtocols. Leave empty unless approved.
+PROBE_ACCESSORY_PROTOCOL =
+
+// A reference to the owner's recorded permission decision. Required for any
+// mode other than BLOCKED.
+PROBE_PERMISSION_BASIS =
+
+// PROBE_SOURCE_SHA is set by build-device.sh from the clean, committed tree.

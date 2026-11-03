@@ -1,0 +1,29 @@
+// ControllerProbe build settings. The committed defaults are BLOCKED and declare
+// no accessory protocol. Owner-reviewed values belong in Local.xcconfig, which
+// is git-ignored and stays private (see ../README.md).
+
+PRODUCT_NAME = $(TARGET_NAME)
+INFOPLIST_FILE = Config/Info.plist
+GENERATE_INFOPLIST_FILE = NO
+SWIFT_VERSION = 6.0
+IPHONEOS_DEPLOYMENT_TARGET = 17.0
+TARGETED_DEVICE_FAMILY = 1
+SUPPORTED_PLATFORMS = iphoneos iphonesimulator
+SUPPORTS_MACCATALYST = NO
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks
+MARKETING_VERSION = 0.1
+CURRENT_PROJECT_VERSION = 1
+CODE_SIGN_STYLE = Automatic
+ENABLE_PREVIEWS = NO
+
+PRODUCT_BUNDLE_IDENTIFIER = $(PROBE_BUNDLE_IDENTIFIER)
+DEVELOPMENT_TEAM = $(PROBE_DEVELOPMENT_TEAM)
+
+PROBE_BUNDLE_IDENTIFIER = org.example.controllerprobe
+PROBE_DEVELOPMENT_TEAM =
+PROBE_RUN_MODE = BLOCKED
+PROBE_ACCESSORY_PROTOCOL =
+PROBE_PERMISSION_BASIS =
+PROBE_SOURCE_SHA =
+
+#include? "Local.xcconfig"
