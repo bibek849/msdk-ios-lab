@@ -1,5 +1,43 @@
 # Test results
 
+## LAB-002 M2/M3: native access dossier — 2026-11-03
+
+**Scope:** documentation only.
+- New: [NATIVE_ACCESS_DOSSIER.md](NATIVE_ACCESS_DOSSIER.md) and [ADR 0002](decisions/0002-native-transport-component.md).
+- Source register: new entries A4–A9 and D7–D11, plus rechecks of C2 and C3.
+- A pointer added in FEASIBILITY.md.
+- No code, fixture, package or dependency change.
+
+**Base:** upstream `main` at `0fbc297df3c5db950efafa1aeb7ca05a64c5af1b`.
+
+**Research method:**
+- Apple pages were read through Apple's public documentation JSON and the archived guide's HTML.
+- DJI and community repositories, licenses and Info.plist declarations were read at pinned commits through the GitHub REST API. No code was copied.
+- DJI web pages and the RC-N3 manual PDF were retrieved on 2026-11-03.
+- One DJI developer-forum thread required sign-in and is not cited.
+
+```sh
+python3 tools/check_repository.py
+git diff --check
+swift test
+```
+
+**PASS:**
+- The repository check reported 42 Markdown files, 231 local link targets and 6 JSON files.
+- `git diff --check` was clean.
+- `swift test` ran 16 tests with 0 failures; the code is unchanged.
+- Local environment: Swift 6.4.2 on an x86_64 Ubuntu 26.04.1 VM.
+
+A one-off script, not added to the repository, resolved every `#anchor` link in the changed files (0 broken). It also fetched each newly added external URL, and all returned HTTP 200 on 2026-11-03.
+
+**NOT RUN:**
+- Any iOS build.
+- Any External Accessory probe.
+- Any DJI Fly, RC-N3 or Mini 4 Pro observation.
+- All H0 and H1 steps.
+
+There was no legal review: the rights questions are recorded, not resolved. Source contents can change after the retrieval dates.
+
 ## First external contributor inbox — 2026-11-02 America/New_York
 
 **PASS: isolated receiver, signed GitHub delivery and authenticated client access** for `yout221496-ops`, GitHub numeric ID `351773451`. This is notification infrastructure evidence. Actual contributor Claude Code connection/tool invocation, scheduling and physical iPhone/DJI tests remain **NOT RUN** pending a separate result.
