@@ -1,5 +1,56 @@
 # Test results
 
+## M5: ControllerProbe source handoff (host checks only) — 2026-11-03
+
+**Scope:** the first source handoff for the planned owner checkpoint on November 4 ([#4](https://github.com/bibek849/msdk-ios-lab/issues/4), [#6](https://github.com/bibek849/msdk-ios-lab/issues/6)). The component decisions are in [ADR 0003](decisions/0003-m5-controller-probe.md). It adds:
+- the `MSDKIOSAppleTransport` target, with a portable run controller and profile and an Apple-only External Accessory binding;
+- the `ControllerProbe` app, a hand-written Xcode project, `build-device.sh` and README in `apps/ios/ControllerProbe/`;
+- the experiment descriptor `experiments/H1-NATIVE-TRANSPORT-PROBE.json`.
+
+The M4 contract gains `RUN_STOPPED` with an explicit reason, and its `apply` uses typed throws. **The committed build is BLOCKED.** There is no write, handshake, network or payload-logging path.
+
+```sh
+swift --version
+swift test
+swift run msdk-ios-replay fixtures/synthetic-telemetry-v1.json
+python3 tools/check_repository.py
+python3 -m unittest discover -s tools/tests
+git diff --check
+```
+
+**PASS on Swift 6.4.2** (x86_64 Ubuntu 26.04.1 VM):
+- 55 tests passed with 0 failures: 16 telemetry, 22 observation-model and 17 run-controller tests.
+- No compiler warnings.
+- The replay CLI exited 0 with 3 samples and `delivery=REPLAY`.
+- The repository check reported 43 Markdown files, 188 local link targets and 10 JSON files.
+- The handoff tooling tests passed, and `git diff --check` was clean.
+
+**PASS on Swift 6.0.3:** the same 55 tests passed, and the replay CLI exited 0. As in M4, this used the official 24.04 toolchain with a private `libxml2.so.2` shim, so it is not CI's container.
+
+**Sensitivity check:** four alterations to the run controller, each restored before committing. Each was caught:
+
+| Alteration | Failed assertions | Failing tests |
+|---|---|---|
+| The read length ignores the 1 MiB total | 1 | 1 |
+| No stop on an input-stream error | 3 | 1 |
+| Every read is retained in the log, so the event budget is hit before the read budget | 4 | 1 |
+| Enumeration-only applies session events | 2 | 1 |
+
+**Local checks, not committed:**
+- `ExternalAccessoryProbe.swift` was type-checked on Linux with Swift 6.4.2 and 6.0.3, against hand-written stand-ins for the External Accessory and Combine names it uses. Object files contained the adapter's symbols, confirming its `#if canImport(ExternalAccessory)` branch compiled. **This checks Swift typing only. It is not an Apple SDK build.**
+- The Xcode project's 23 objects all resolve.
+- The scheme is well-formed XML and points at the defined target.
+- `Info.plist` parses and has no background modes.
+- `build-device.sh` passes `sh -n`.
+- The experiment descriptor passes `tools/prepare_handoff.py` validation as `DRAFT`, with 9 pending owner items.
+
+**NOT RUN:**
+- Opening the Xcode project, Apple compilation, signing and installation.
+- Any External Accessory call.
+- Any iPhone, RC-N3, Mini 4 Pro or DJI Fly step.
+
+These belong to the owner's H0 and H1.
+
 ## M4: probe observation contract (host-only) — 2026-11-03
 
 **Scope:**
