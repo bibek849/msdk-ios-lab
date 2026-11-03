@@ -1,5 +1,8 @@
 # GitHub work events for contributor agents
 
+For onboarding, use the [four-step quickstart](CONTRIBUTOR_QUICKSTART.md) and shared [agent prompt](templates/CONTRIBUTOR_AGENT_PROMPT.md). The local MCP adapter exposes the same inbox to Claude Code and Codex; the [maintainer guide](MAINTAINER_ONBOARDING.md) provisions isolated recipients without changing the existing pilot.
+
+
 **Yes: a contributor can connect their own agent to GitHub, follow assigned work, and return a patch for the hardware owner to test.** Repository access, event delivery and permission to run a coding task are separate settings. An AI subscription alone does not create an always-running listener.
 
 Status, **2026-11-02**: the opt-in workflow now has a [Worker/D1 receiver and client implementation](AGENT_INBOX_DEPLOYMENT.md) for one contributor, `bibek849`. The deployment guide records live setup separately. [Claude Code](CLAUDE_CODE_PILOT.md) can consume it using an explicit local `/loop` prompt. No unattended coding executor is included. The `gh` commands below remain read-only snapshots; the later architecture section distinguishes implemented pilot features from future extensions.

@@ -1,5 +1,8 @@
 # Optional Claude Code contributor adapter
 
+For the shortest setup, use the [contributor quickstart](CONTRIBUTOR_QUICKSTART.md). It configures a private inbox and prints the Claude Code or Codex connection command.
+
+
 **The project owner does not need Claude Code or a Claude account.** The GitHub App, durable inbox and Python client work independently of any AI provider. The owner assigns GitHub work, tests hardware and shares feedback; a contributor who chooses Claude Code can connect their own session using this optional guide.
 
 The first owner-operated pilot used **`bibek849`**, for `bibek849/msdk-ios-lab` only. The Cloudflare Worker/D1 deployment and installed GitHub App have delivered all six supported event families to the client; explicit acknowledgment and retry checks passed. This verifies **GitHub → inbox → CLI** without Claude. See [deployment and operation](AGENT_INBOX_DEPLOYMENT.md) and [test results](TEST_RESULTS.md) for the live execution record.

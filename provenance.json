@@ -27,7 +27,11 @@
     "setup_node_commit": "949feb2413d6458794dcd2491c4babbbce0c15c1",
     "dependency_lock": "services/agent-inbox/package-lock.json",
     "platform": "Cloudflare Workers and D1",
-    "github_permissions": {"issues": "read", "pull_requests": "read", "metadata": "read"}
+    "github_permissions": {
+      "issues": "read",
+      "pull_requests": "read",
+      "metadata": "read"
+    }
   },
   "hardware_target": {
     "phone": "iPhone 15 Pro Max",
@@ -37,5 +41,23 @@
     "aircraft": "DJI Mini 4 Pro",
     "aircraft_firmware": null,
     "project_validation": "NOT RUN"
+  },
+  "contributor_onboarding": {
+    "scope": "Python standard-library tools; no iOS runtime or AI API dependency",
+    "mcp_protocols": [
+      "2025-11-25",
+      "2026-07-28"
+    ],
+    "mcp_transport": "local stdio only; tools-only; no scheduling or GitHub writes",
+    "mcp_specifications": [
+      "https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle",
+      "https://modelcontextprotocol.io/specification/2026-07-28/basic/versioning"
+    ],
+    "client_setup_sources": [
+      "https://learn.chatgpt.com/docs/extend/mcp",
+      "https://code.claude.com/docs/en/mcp"
+    ],
+    "recipient_strategy": "Isolated Worker, D1 and private GitHub App per contributor for bounded small cohort; no live multi-recipient migration",
+    "validation_only_sdk": "@modelcontextprotocol/client@2.4.0 (temporary interoperability fixture, not a runtime dependency)"
   }
 }
