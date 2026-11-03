@@ -1,5 +1,46 @@
 # Test results
 
+## First external contributor inbox — 2026-11-02 America/New_York
+
+**PASS: isolated receiver, signed GitHub delivery and authenticated client access** for `yout221496-ops`, GitHub numeric ID `351773451`. This is notification infrastructure evidence. Actual contributor Claude Code connection/tool invocation, scheduling and physical iPhone/DJI tests remain **NOT RUN** pending a separate result.
+
+| Identity | Observed value |
+|---|---|
+| Worker / health | `msdk-inbox-351773451` / [HTTPS health](https://msdk-inbox-351773451.onrampyadav.workers.dev/health) |
+| Deployed version | `675428f4-6155-4e98-8308-dbdcc387236e` |
+| D1 database | `msdk-inbox-351773451`, UUID `725d7b1f-5131-479d-9dc8-2c48cf660d68` |
+| GitHub App / installation | `5590050` / `msdk-lab-inbox-351773451` / `178061471` |
+| Scope | Only `bibek849/msdk-ios-lab`; read-only Issues, Pull requests and Metadata; six event families |
+| Explicit tracked issues | `4,13`; assignment preceded activation, so history must be reconciled on GitHub |
+| Deployment checkout | `bd2b7f2f21bb448cf7299b31079bc71553da4b37`; no receiver-source or migration-schema changes |
+
+Cloudflare Workers Free was verified in the account dashboard. Preflight found one D1 database and two Workers, and the selected new names were unused. Only the new recipient Worker/database were added; the existing owner pilot was not modified. No App private key was generated, no AI provider was called, and no billing setting changed.
+
+The new database migration executed **seven commands successfully**. Health returned **200**, unauthenticated fetch returned **401**, and the authenticated Python client returned the correct recipient with **zero pending events** before the delivery test. These access checks are separate from the GitHub delivery evidence below and do not establish a contributor agent session.
+
+Commands ran from `/Users/kraten/Documents/Playground/msdk-ios-lab` with pinned Wrangler **4.156.2** and isolated authentication. `/PRIVATE/PILOT` and `/PRIVATE/CONTRIBUTOR` redact private paths; every mutation selects the new recipient config. The first deployment was disabled; the final one followed installation-ID, tracked-issue and enablement configuration.
+
+```sh
+export XDG_CONFIG_HOME=/PRIVATE/PILOT/wrangler-auth
+export WRANGLER_SEND_METRICS=false
+export WRANGLER_LOG_PATH=/private/tmp/msdk-contributor-invite-wrangler.log
+wrangler_bin=/private/tmp/msdk-agent-inbox/services/agent-inbox/node_modules/.bin/wrangler
+"$wrangler_bin" d1 create msdk-inbox-351773451 --config /PRIVATE/CONTRIBUTOR/wrangler.contributor.jsonc
+"$wrangler_bin" d1 migrations apply msdk-inbox-351773451 --remote --config /PRIVATE/CONTRIBUTOR/wrangler.contributor.jsonc
+"$wrangler_bin" deploy --config /PRIVATE/CONTRIBUTOR/wrangler.contributor.jsonc
+"$wrangler_bin" secret bulk /PRIVATE/CONTRIBUTOR/worker-secrets.json --config /PRIVATE/CONTRIBUTOR/wrangler.contributor.jsonc
+"$wrangler_bin" deploy --config /PRIVATE/CONTRIBUTOR/wrangler.contributor.jsonc
+python3 tools/agent_inbox.py --config /PRIVATE/CONTRIBUTOR/client.json fetch --limit 20
+```
+
+Recipient key provenance: [the contributor's public-key comment](https://github.com/bibek849/msdk-ios-lab/issues/13#issuecomment-6595251930), authenticated author ID `351773451`; SPKI SHA-256 `a37142d3a2540193cba20cfd08a7582a884e8f5edd2a62f953fe550822acb317`. Only the nonsecret invite and RSA-OAEP/SHA-256/MGF1-SHA-256 ciphertext may be published; the token and private key stay private.
+
+The user-authorized [encrypted invitation](https://github.com/bibek849/msdk-ios-lab/issues/13#issuecomment-6595469738) was published and edited through the contributor-readable onboarding issue. A publication scan found neither the plaintext inbox token nor the webhook secret in the comment. Recipient-side decryption and connection remain **NOT RUN** until reported.
+
+**PASS: real `issue_comment` created and edited events** from `bibek849` on issue `13` reached the new inbox as pending IDs `1,2`. Both were left **UNACKNOWLEDGED** for the contributor. The owner inbox still authenticated as `bibek849`; presenting each recipient token to the other recipient's endpoint returned **401 in both directions**. This establishes tested delivery/isolation, not Claude Code receipt, scheduling or hardware readiness.
+
+Documentation verification: `python3 tools/check_repository.py` **PASS** (40 Markdown files, 181 local link targets, 6 JSON files); `git diff --check` **PASS**. No runtime code changed for this record.
+
 ## Contributor onboarding and agent adapter — 2026-11-02
 
 Scope: a private-profile connector, offline recipient invitation preparer, local stdio MCP adapter, GitHub onboarding form and contributor/maintainer guides. The live Worker, database schema, existing App permissions and billing were not changed. No additional contributor was contacted or enrolled, and no AI-provider account was activated.
