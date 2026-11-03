@@ -10,7 +10,7 @@ We want to learn whether an iPhone can establish its own controller/aircraft ses
 
 ## Start here
 
-- **Contribute without a drone:** [AI contributor workflow](docs/AI_CONTRIBUTOR_WORKFLOW.md), [ready tasks](https://github.com/bibek849/msdk-ios-lab/issues?q=is%3Aissue%20is%3Aopen%20label%3A%22status%3A%20ready%22), and a [copyable agent task brief](docs/templates/AGENT_TASK.md).
+- **Contribute without a drone:** [connect Claude Code or Codex in four steps](docs/CONTRIBUTOR_QUICKSTART.md), [request an invitation](https://github.com/bibek849/msdk-ios-lab/issues/new?template=contributor.yml), and [choose a ready task](https://github.com/bibek849/msdk-ios-lab/issues?q=is%3Aissue%20is%3Aopen%20label%3A%22status%3A%20ready%22).
 - [INSPIRATION.md](INSPIRATION.md): why this is worth trying, the hypotheses, and what useful failure looks like.
 - [Feasibility](docs/FEASIBILITY.md): platform constraints and independently checked community leads.
 - [Roadmap](docs/ROADMAP.md): incremental stages, acceptance evidence and stop conditions.
@@ -80,7 +80,7 @@ Scoped issue → contributor + agent → small PR → hosted checks + review
                                                         → shareable feedback → regression → review
 ```
 
-Start with [AI_CONTRIBUTOR_WORKFLOW.md](docs/AI_CONTRIBUTOR_WORKFLOW.md). The [handoff format and tool](docs/HANDOFF_FORMAT.md) prepare a request bound to committed source; they do not execute commands or approve a hardware run. The [maintainer playbook](docs/MAINTAINER_PLAYBOOK.md) describes how requests enter the local test queue.
+Start with the [contributor quickstart](docs/CONTRIBUTOR_QUICKSTART.md): an invitation and hidden token prompt configure your inbox, then one printed command connects your agent. The [shared task prompt](docs/templates/CONTRIBUTOR_AGENT_PROMPT.md) covers scoped work, PR submission and later feedback. Maintainers use the [invitation guide](docs/MAINTAINER_ONBOARDING.md). The [detailed workflow](docs/AI_CONTRIBUTOR_WORKFLOW.md) and [handoff tool](docs/HANDOFF_FORMAT.md) keep hardware requests bound to committed source; they do not execute experiments or approve a hardware run.
 
 For ongoing work, assign the human contributor's GitHub account and keep actionable communication on the linked issue/PR. The [event workflow](docs/AGENT_EVENT_WORKFLOW.md) now has a [GitHub App receiver and durable inbox implementation](docs/AGENT_INBOX_DEPLOYMENT.md) for a one-contributor pilot. [Claude Code setup](docs/CLAUDE_CODE_PILOT.md) uses the same provider-neutral client. See the deployment record for live status; receipt of an event does not authorize coding, merging or hardware execution.
 

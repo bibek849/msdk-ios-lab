@@ -1,5 +1,59 @@
 # Test results
 
+## Contributor onboarding and agent adapter — 2026-11-02
+
+Scope: a private-profile connector, offline recipient invitation preparer, local stdio MCP adapter, GitHub onboarding form and contributor/maintainer guides. The live Worker, database schema, existing App permissions and billing were not changed. No additional contributor was contacted or enrolled, and no AI-provider account was activated.
+
+```sh
+python3 -m unittest discover -s tools/tests -q
+python3 tools/check_repository.py
+git diff --check
+```
+
+**PASS: 70 Python tests**, comprising the prior 28 plus 19 connector, 9 invitation and 14 MCP tests. Local environment: Python 3.14.6, arm64 macOS; loopback permission was needed for HTTP fixtures. Connector tests verify both GitHub login and numeric identity, remote identity before credential persistence, private files, immutable profiles, checkout-independent runtime copies, shell quoting and diagnostic redaction. Invitation tests cover separate recipient secrets, disabled configs, correct public invite fields, known-pilot protection and no credential disclosure. MCP subprocess tests cover both supported protocol revisions, inert notification content, exact acknowledgments, malformed envelopes, frame bounds and failure redaction.
+
+An initial integration run exposed an error-message redaction regression after improving setup diagnostics. Local onboarding errors are now distinguished from external client errors, and all 19 connector tests passed after the fix. The complete 70-test suite subsequently passed. A later official-SDK check found missing modern caching hints; those were added and all 14 MCP tests passed again. The final desktop setup-field addition passed the connector suite again. Hosted CI independently covers the final combined revision.
+
+The [official MCP TypeScript client](https://ts.sdk.modelcontextprotocol.io/v2/get-started/first-client) was installed **only in a temporary interoperability fixture**, pinned to `@modelcontextprotocol/client@2.4.0`; Node was 25.9.0. It is not a repository runtime dependency:
+
+```sh
+npm install --prefix /private/tmp/msdk-mcp-sdk-interop \
+  --save-exact --ignore-scripts --cache /private/tmp/msdk-mcp-sdk-cache \
+  @modelcontextprotocol/client@2.4.0
+node /private/tmp/msdk-mcp-sdk-interop/interop.mjs
+```
+
+**PASS:** default legacy `2025-11-25`, automatic modern `2026-07-28`, and explicitly pinned modern mode. Each verified status, fetch, explicit ack and error handling against a synthetic HTTP fixture. The SDK initially rejected a modern tool-list response without `ttlMs`/`cacheScope`; the adapter now supplies those required hints on modern discovery/tool-list responses and the SDK accepts them. The [modern caching specification](https://modelcontextprotocol.io/specification/2026-07-28/server/utilities/caching) is the contract. This is independent SDK interoperability, not proof of every agent product's behavior.
+
+The new recipient bundle also passed a real Wrangler **dry run** with config outside the checkout:
+
+```sh
+WRANGLER_SEND_METRICS=false WRANGLER_LOG_PATH=/private/tmp/msdk-contributor-invite-dryrun/wrangler.log \
+  /private/tmp/msdk-agent-inbox/services/agent-inbox/node_modules/.bin/wrangler deploy \
+  --dry-run --config /private/tmp/msdk-contributor-invite-dryrun/wrangler.contributor.jsonc \
+  --outdir /private/tmp/msdk-contributor-invite-dryrun/build
+```
+
+**PASS:** Wrangler 4.156.2, 14.92 KiB / 4.72 KiB gzip, synthetic recipient and database, `INSTALLATION_ID=0`, `PILOT_ENABLED=false`. This confirms the generated absolute-path config bundles correctly; no cloud deployment occurred.
+
+### Existing pilot connection smoke test
+
+The new connector successfully verified the existing `bibek849` GitHub identity and authenticated inbox, created a private temporary profile with copied runtime, printed token-free connection commands, and passed `doctor`. The private credential path is intentionally redacted below:
+
+```sh
+python3 tools/contributor.py connect \
+  --invite /private/tmp/msdk-onboarding-live-invite.json \
+  --token-file /PRIVATE/PILOT/inbox-token \
+  --home /private/tmp/msdk-onboarding-live-profile-v2 --agent codex
+python3 tools/contributor.py doctor --home /private/tmp/msdk-onboarding-live-profile-v2
+codex --version
+codex mcp add --help
+```
+
+**PASS:** `connected=true`, recipient `bibek849`; doctor reported `agent_registration=not_checked` and `hardware=NOT_RUN`. The installed Codex CLI was `0.166.0-alpha.5.1`; its help confirmed the generated `mcp add NAME -- COMMAND...` syntax. No Codex configuration was written and no model was invoked. A separate subprocess handshake/discovery/status/fetch check through the copied adapter reached the live inbox without acknowledgment. The prior live event pilot below remains the assignment/review/hardware-feedback transport evidence.
+
+**NOT RUN:** actual Claude Code or Codex session tool invocation/scheduling, another human contributor's enrollment, new contributor cloud deployment, PR submission under another account, physical iPhone/DJI tests. The owner does not need an AI account for this workflow. Agent installation and scheduling remain explicit contributor choices; an MCP connection itself does not start an always-on observer.
+
 ## Contributor event inbox: live pilot — 2026-11-02 America/New_York
 
 **PASS: GitHub → signed receiver → D1 → authenticated Python client**, for `bibek849` on this public repository. This qualifies notification delivery only. The maintainer does not need Claude Code; contributors may independently use the optional Claude adapter or another agent. Actual Claude execution and physical hardware remain **NOT RUN**.

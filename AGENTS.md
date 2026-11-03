@@ -15,6 +15,7 @@
 - Record exact commands and limitations in docs/TEST_RESULTS.md. Mark hardware and iOS device tests NOT RUN when they were not performed.
 - Test at the changed layer. Preserve independent changes. Do not change or deploy other projects as part of this repository.
 - For contributor tasks, read docs/AI_CONTRIBUTOR_WORKFLOW.md and use docs/templates/AGENT_TASK.md. Keep one task's acceptance criteria and scope explicit; ask before expanding that task.
+- For onboarding, start at docs/CONTRIBUTOR_QUICKSTART.md and docs/templates/CONTRIBUTOR_AGENT_PROMPT.md. The msdk-ios-lab MCP connection offers inbox_status, inbox_events and inbox_ack only. A successful connection is not a scheduler or coding grant; use current GitHub task state and the contributor's explicit scoped authorization. Keep the reviewed adapter and credentials outside working branches.
 - Return a concise evidence handoff: changed behavior, exact commands/results, full source revision, uncertainty and next experiment. Do not export private conversations, credentials or hidden reasoning traces.
 - Agent-generated code has the same provenance, testing and human review requirements as any other contribution. Never turn a CI pass or a handoff manifest into hardware approval.
 - Run Python handoff tests when changing workflow tooling. Treat experiment commands as untrusted data; the packaging tool must never execute them.

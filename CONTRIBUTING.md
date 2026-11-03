@@ -1,5 +1,8 @@
 # Contributing
 
+For the shortest setup, use the [contributor quickstart](docs/CONTRIBUTOR_QUICKSTART.md). It configures a private inbox and prints the Claude Code or Codex connection command.
+
+
 Start with the [README](README.md), [feasibility assessment](docs/FEASIBILITY.md) and the relevant [roadmap gate](docs/ROADMAP.md). The current implementation is a software-only foundation. Native DJI access and all physical capabilities are unvalidated in this repository.
 
 **Using an AI coding assistant without hardware?** Follow the [AI contributor workflow](docs/AI_CONTRIBUTOR_WORKFLOW.md) and copy the [agent task brief](docs/templates/AGENT_TASK.md). You use your own account; no paid plan, tool brand, prompt transcript or subscription sharing is required by the project. The submitting person reviews and takes responsibility for the change. Describe material agent assistance and what you personally verified; do not include private conversations or hidden reasoning traces.

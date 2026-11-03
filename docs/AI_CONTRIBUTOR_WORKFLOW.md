@@ -1,5 +1,8 @@
 # Contribute with your AI agent, without owning the hardware
 
+For the shortest setup, use the [contributor quickstart](CONTRIBUTOR_QUICKSTART.md). It configures a private inbox and prints the Claude Code or Codex connection command.
+
+
 You can contribute using your own AI coding subscription and development environment. You do not need a drone, an Apple device, a DJI account or shared maintainer credentials for the software-only tasks. AI assistance is welcome; the contributor remains responsible for understanding the patch, checking its sources and reporting what actually ran.
 
 Choose one useful deliverable. A reviewed fix, a small original fixture or a clear negative finding is valuable. A large amount of generated code does not by itself advance a stage.

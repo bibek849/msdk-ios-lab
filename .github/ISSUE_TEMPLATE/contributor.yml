@@ -1,0 +1,48 @@
+name: Join as a contributor
+description: Connect your own agent, choose a small task and receive hardware feedback.
+title: "Contributor onboarding: "
+labels: [question]
+assignees: [bibek849]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        No drone or paid project account is needed. Your GitHub identity is the author of this request.
+        Never include API keys, inbox tokens, school credentials or private hardware data here.
+        Start here: https://github.com/bibek849/msdk-ios-lab/blob/main/docs/CONTRIBUTOR_QUICKSTART.md
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Your preferred tool
+      options:
+        - Claude Code
+        - Codex
+        - Another agent or manual contribution
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Development environment
+      description: OS and relevant tools only; no personal account details.
+      placeholder: macOS with Python and Swift, or Linux/WSL with Python
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: First task or area of interest
+      description: Link a ready issue or describe one small question you would like to answer.
+    validations:
+      required: true
+  - type: checkboxes
+    id: agreement
+    attributes:
+      label: Contribution and inbox agreement
+      options:
+        - label: I opt in to assignment, review and shareable hardware-feedback notifications for this project, and may ask to revoke access.
+          required: true
+        - label: I use my own agent account, review my contribution, and keep credentials private.
+          required: true
+        - label: Device installation and physical testing remain with the hardware owner; notifications do not grant hardware authority.
+          required: true

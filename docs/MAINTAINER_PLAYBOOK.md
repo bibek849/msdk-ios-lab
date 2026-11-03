@@ -1,5 +1,8 @@
 # Maintainer playbook
 
+For new contributors, use [maintainer onboarding](MAINTAINER_ONBOARDING.md): prepare an invitation, provision only their isolated inbox, assign one task and publish exact-revision hardware feedback.
+
+
 The maintainer turns remote software work into reliable local evidence. The initial physical target is **iPhone 15 Pro Max + RC-N3 + Mini 4 Pro**; its exact OS/firmware and transport details remain pending. No hardware checks have passed in this repository.
 
 Use this playbook for queue management and feedback. Use [HARDWARE_TESTING.md](HARDWARE_TESTING.md) for the actual stage gates and device procedures.
