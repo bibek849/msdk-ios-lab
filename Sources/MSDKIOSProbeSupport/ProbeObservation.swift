@@ -7,6 +7,17 @@ public enum ProbeCohort: String, Codable, Sendable {
     case unspecified = "UNSPECIFIED"
 }
 
+/// Why a run was stopped before its window elapsed. Budgets are diagnostic
+/// limits chosen by this project, not properties of any accessory protocol.
+public enum ProbeStopReason: String, Codable, Sendable, CaseIterable {
+    case `operator` = "OPERATOR"
+    case streamError = "STREAM_ERROR"
+    case streamEnd = "STREAM_END"
+    case eventBudget = "EVENT_BUDGET"
+    case readBudget = "READ_BUDGET"
+    case appBackground = "APP_BACKGROUND"
+}
+
 public enum ProbeStream: String, Codable, Sendable {
     case input = "INPUT"
     case output = "OUTPUT"
@@ -37,7 +48,7 @@ public enum ProbeEvent: Equatable, Sendable {
     case syntheticReadiness(fact: ProbeReadinessFact, value: Bool)
     case sessionClosed(sessionID: String)
     case accessoryDetached(accessoryID: UInt64)
-    case operatorStopped
+    case runStopped(reason: ProbeStopReason)
 }
 
 /// One observation. `atMilliseconds` comes from the caller's monotonic clock.
@@ -67,12 +78,12 @@ public struct ProbeObservation: Codable, Equatable, Sendable {
         case syntheticReadiness = "SYNTHETIC_READINESS"
         case sessionClosed = "SESSION_CLOSED"
         case accessoryDetached = "ACCESSORY_DETACHED"
-        case operatorStopped = "OPERATOR_STOPPED"
+        case runStopped = "RUN_STOPPED"
     }
 
     enum CodingKeys: String, CodingKey {
         case runID, atMilliseconds, kind
-        case accessoryID, names, sessionID, protocolName, stream, byteCount, fact, value
+        case accessoryID, names, sessionID, protocolName, stream, byteCount, fact, value, reason
     }
 
     // A flat `kind` discriminator; unknown kinds, missing fields and
@@ -106,7 +117,7 @@ public struct ProbeObservation: Codable, Equatable, Sendable {
                                         value: try values.decode(Bool.self, forKey: .value))
         case .sessionClosed: event = .sessionClosed(sessionID: try session())
         case .accessoryDetached: event = .accessoryDetached(accessoryID: try accessory())
-        case .operatorStopped: event = .operatorStopped
+        case .runStopped: event = .runStopped(reason: try values.decode(ProbeStopReason.self, forKey: .reason))
         }
     }
 
@@ -164,8 +175,9 @@ public struct ProbeObservation: Codable, Equatable, Sendable {
         case .accessoryDetached(let accessoryID):
             try values.encode(Kind.accessoryDetached, forKey: .kind)
             try values.encode(accessoryID, forKey: .accessoryID)
-        case .operatorStopped:
-            try values.encode(Kind.operatorStopped, forKey: .kind)
+        case .runStopped(let reason):
+            try values.encode(Kind.runStopped, forKey: .kind)
+            try values.encode(reason, forKey: .reason)
         }
     }
 }

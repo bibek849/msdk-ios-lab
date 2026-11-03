@@ -67,7 +67,7 @@ If the answer is yes, an H1 run record cannot conflate transport layers with air
 | Zero-byte reads and failed reads | 0 | `READ_COMPLETED` with `byteCount == 0`, and `READ_FAILED` | — |
 | Blocked write attempts | 0 | `WRITE_ATTEMPTED`; nothing is ever transmitted | — |
 | Aircraft ready, initialization complete, telemetry valid | `unknown` each | `SYNTHETIC_READINESS` in a `MOCK` run only, one fact at a time | every session, stream, read and write event |
-| End reason and time | none | close, detach, operator stop or window expiry | — |
+| End reason and time | none | close, detach, `RUN_STOPPED` with its reason, or window expiry | — |
 
 Two policy flags mark H1 stop conditions:
 - `OUTPUT_STREAM_ACTIVITY`, set by any accepted output-stream event;
@@ -104,13 +104,15 @@ Every observation has `runID`, `atMilliseconds` and `kind`. The "Requires" colum
 | `SYNTHETIC_READINESS` | `fact`, `value` (Bool) | Origin `MOCK` | Records that one fact as synthetically reported |
 | `SESSION_CLOSED` | `sessionID` | The current session | Ends the run (`SESSION_CLOSED`) |
 | `ACCESSORY_DETACHED` | `accessoryID` | The same visible accessory | Ends the run (`ACCESSORY_DETACHED`) |
-| `OPERATOR_STOPPED` | — | — | Ends the run (`OPERATOR_STOPPED`) |
+| `RUN_STOPPED` | `reason` | — | Ends the run as stopped for that reason |
 
 `fact` is one of `AIRCRAFT_READY`, `INITIALIZATION_COMPLETE` or `TELEMETRY_VALID`. These are labels for exercising this model, not observations of any device.
 
+`reason` is one of `OPERATOR`, `STREAM_ERROR`, `STREAM_END`, `EVENT_BUDGET`, `READ_BUDGET` or `APP_BACKGROUND`. The reducer records the reason it is given. It never stops a run by itself because of a stream error or end: that policy belongs to the M5 run controller, which issues `RUN_STOPPED` for budgets, input-stream errors or ends, and backgrounding.
+
 ## Ending a run
 
-- `SESSION_CLOSED`, `ACCESSORY_DETACHED` and `OPERATOR_STOPPED` end the run at the observation's time.
+- `SESSION_CLOSED`, `ACCESSORY_DETACHED` and `RUN_STOPPED` end the run at the observation's time.
 - **Window expiry:**
   - Expiring the window ends the run with `WINDOW_ELAPSED` at exactly `start + window`, whenever it is called. The fixture runner calls it after the last observation if the run is still open.
   - An observation later than the window end is **rejected without ending the run**, because a rejected observation never changes state.
@@ -167,7 +169,7 @@ The fixture is rejected as a whole in these cases:
 | `source` other than `MOCK` | `sourceMismatch` |
 | An invalid run ID or window | `invalidRun`, `invalidWindow` |
 
-Any unknown `kind`, `stream`, `fact` or `cohort`, a missing field, a wrong type, or a negative or larger-than-`UInt64` number fails decoding. Extra fields are ignored, as in telemetry v1. Individual observations that fail the rules above are rejected and reported, while the rest of the run continues.
+Any unknown `kind`, `stream`, `fact`, `reason` or `cohort`, a missing field, a wrong type, or a negative or larger-than-`UInt64` number fails decoding. Extra fields are ignored, as in telemetry v1. Individual observations that fail the rules above are rejected and reported, while the rest of the run continues.
 
 ## Expected semantics for the required cases
 

@@ -15,11 +15,20 @@ public enum SyntheticReadiness: Equatable, Sendable {
     case syntheticallyReported(Bool)
 }
 
-public enum ProbeEndReason: String, Sendable {
-    case sessionClosed = "SESSION_CLOSED"
-    case accessoryDetached = "ACCESSORY_DETACHED"
-    case operatorStopped = "OPERATOR_STOPPED"
-    case windowElapsed = "WINDOW_ELAPSED"
+public enum ProbeEndReason: Equatable, Sendable {
+    case sessionClosed
+    case accessoryDetached
+    case windowElapsed
+    case stopped(ProbeStopReason)
+
+    public var label: String {
+        switch self {
+        case .sessionClosed: "SESSION_CLOSED"
+        case .accessoryDetached: "ACCESSORY_DETACHED"
+        case .windowElapsed: "WINDOW_ELAPSED"
+        case .stopped(let reason): "STOPPED_" + reason.rawValue
+        }
+    }
 }
 
 /// H1 stop-condition markers. Recording one changes no other fact.
@@ -203,8 +212,8 @@ public struct ProbeRun: Sendable {
         case .accessoryDetached(let accessoryID):
             try requireAccessory(s, accessoryID)
             end(&s, .accessoryDetached, at)
-        case .operatorStopped:
-            end(&s, .operatorStopped, at)
+        case .runStopped(let reason):
+            end(&s, .stopped(reason), at)
         }
         s.lastAcceptedAtMilliseconds = at
     }

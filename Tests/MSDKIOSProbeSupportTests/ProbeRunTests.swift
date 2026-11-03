@@ -198,7 +198,7 @@ final class ProbeRunTests: XCTestCase {
         var run = try sessionRun()
         let lateEvents: [ProbeEvent] = [
             .sessionClosed(sessionID: "s1"), .streamOpened(sessionID: "s1", stream: .input),
-            .syntheticReadiness(fact: .aircraftReady, value: true), .operatorStopped
+            .syntheticReadiness(fact: .aircraftReady, value: true), .runStopped(reason: .operator)
         ]
         for event in lateEvents {
             assertRejected(.wrongRun, &run, at(1_030, event, run: "run-old"))
@@ -338,10 +338,10 @@ final class ProbeRunTests: XCTestCase {
             }
         }
         assertFixture(.tooLarge, Data(repeating: 32, count: SyntheticProbeFixture.maximumBytes + 1))
-        let stop = #"{"runID": "run-a", "atMilliseconds": 0, "kind": "OPERATOR_STOPPED"}"#
+        let stop = #"{"runID": "run-a", "atMilliseconds": 0, "kind": "RUN_STOPPED", "reason": "OPERATOR"}"#
         assertFixture(.tooManyEvents, envelope(events: Array(repeating: stop, count: 257)))
         let full = try SyntheticProbeFixture.decode(envelope(events: Array(repeating: stop, count: 256))).replay()
-        XCTAssertEqual(full.state.endReason, .operatorStopped)
+        XCTAssertEqual(full.state.endReason, .stopped(.operator))
         XCTAssertEqual(full.rejections.count, 255)
         assertFixture(.notSynthetic, envelope(synthetic: false))
         assertFixture(.sourceMismatch, envelope(source: "LIVE"))
@@ -353,8 +353,10 @@ final class ProbeRunTests: XCTestCase {
     func testMalformedValuesFailDecodingAndExtraFieldsAreIgnored() throws {
         let malformed = [
             #"{"runID": "run-a", "atMilliseconds": 0, "kind": "UNKNOWN_KIND"}"#,
-            #"{"runID": "run-a", "atMilliseconds": -1, "kind": "OPERATOR_STOPPED"}"#,
-            #"{"runID": "run-a", "atMilliseconds": 18446744073709551616, "kind": "OPERATOR_STOPPED"}"#,
+            #"{"runID": "run-a", "atMilliseconds": -1, "kind": "RUN_STOPPED", "reason": "OPERATOR"}"#,
+            #"{"runID": "run-a", "atMilliseconds": 18446744073709551616, "kind": "RUN_STOPPED", "reason": "OPERATOR"}"#,
+            #"{"runID": "run-a", "atMilliseconds": 0, "kind": "RUN_STOPPED"}"#,
+            #"{"runID": "run-a", "atMilliseconds": 0, "kind": "RUN_STOPPED", "reason": "TIRED"}"#,
             #"{"runID": "run-a", "atMilliseconds": 0, "kind": "READ_COMPLETED", "sessionID": "s1", "byteCount": -1}"#,
             #"{"runID": "run-a", "atMilliseconds": 0, "kind": "READ_COMPLETED", "sessionID": "s1"}"#,
             #"{"runID": "run-a", "atMilliseconds": 0, "kind": "STREAM_OPENED", "sessionID": "s1", "stream": "BOTH"}"#,
@@ -369,9 +371,9 @@ final class ProbeRunTests: XCTestCase {
             XCTAssertTrue(error is DecodingError)
         }
         XCTAssertThrowsError(try SyntheticProbeFixture.decode(Data("{".utf8)))
-        let extra = #"{"runID": "run-a", "atMilliseconds": 0, "kind": "OPERATOR_STOPPED", "note": "ignored"}"#
+        let extra = #"{"runID": "run-a", "atMilliseconds": 0, "kind": "RUN_STOPPED", "reason": "READ_BUDGET", "note": "ignored"}"#
         XCTAssertEqual(try SyntheticProbeFixture.decode(envelope(events: [extra])).replay().state.endReason,
-                       .operatorStopped)
+                       .stopped(.readBudget))
     }
 
     func testEveryObservationKindRoundTripsThroughJSON() throws {
@@ -382,8 +384,8 @@ final class ProbeRunTests: XCTestCase {
             .streamEnd(sessionID: "s1", stream: .input), .bytesAvailable(sessionID: "s1"),
             .readCompleted(sessionID: "s1", byteCount: UInt64.max), .readFailed(sessionID: "s1"),
             .writeAttempted(sessionID: "s1"), .syntheticReadiness(fact: .initializationComplete, value: true),
-            .sessionClosed(sessionID: "s1"), .accessoryDetached(accessoryID: 1), .operatorStopped
-        ]
+            .sessionClosed(sessionID: "s1"), .accessoryDetached(accessoryID: 1)
+        ] + ProbeStopReason.allCases.map { .runStopped(reason: $0) }
         for event in events {
             let observation = ProbeObservation(runID: "run-a", atMilliseconds: 5, event: event)
             let decoded = try JSONDecoder().decode(ProbeObservation.self, from: JSONEncoder().encode(observation))
