@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "synthetic": true,
+  "source": "MOCK",
+  "runID": "synthetic-no-bytes-1",
+  "cohort": "COLD",
+  "startedAtMilliseconds": 0,
+  "windowMilliseconds": 5000,
+  "events": [
+    {"runID": "synthetic-no-bytes-1", "atMilliseconds": 0, "kind": "ACCESSORY_VISIBLE", "accessoryID": 7},
+    {"runID": "synthetic-no-bytes-1", "atMilliseconds": 10, "kind": "PROTOCOLS_ADVERTISED", "accessoryID": 7, "names": ["org.example.synthetic.alpha"]},
+    {"runID": "synthetic-no-bytes-1", "atMilliseconds": 20, "kind": "SESSION_CREATED", "sessionID": "synthetic-session-7", "protocolName": "org.example.synthetic.alpha"},
+    {"runID": "synthetic-no-bytes-1", "atMilliseconds": 30, "kind": "STREAM_OPENED", "sessionID": "synthetic-session-7", "stream": "INPUT"}
+  ]
+}

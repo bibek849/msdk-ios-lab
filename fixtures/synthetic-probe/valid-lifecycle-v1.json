@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "synthetic": true,
+  "source": "MOCK",
+  "runID": "synthetic-lifecycle-1",
+  "cohort": "UNSPECIFIED",
+  "startedAtMilliseconds": 1000,
+  "windowMilliseconds": 60000,
+  "events": [
+    {"runID": "synthetic-lifecycle-1", "atMilliseconds": 1000, "kind": "ACCESSORY_VISIBLE", "accessoryID": 1},
+    {"runID": "synthetic-lifecycle-1", "atMilliseconds": 1010, "kind": "PROTOCOLS_ADVERTISED", "accessoryID": 1, "names": []},
+    {"runID": "synthetic-lifecycle-1", "atMilliseconds": 1200, "kind": "PROTOCOLS_ADVERTISED", "accessoryID": 1, "names": ["org.example.synthetic.alpha", "org.example.synthetic.beta"]},
+    {"runID": "synthetic-lifecycle-1", "atMilliseconds": 1300, "kind": "SESSION_CREATED", "sessionID": "synthetic-session-1", "protocolName": "org.example.synthetic.alpha"},
+    {"runID": "synthetic-lifecycle-1", "atMilliseconds": 1310, "kind": "STREAM_OPENED", "sessionID": "synthetic-session-1", "stream": "INPUT"},
+    {"runID": "synthetic-lifecycle-1", "atMilliseconds": 1500, "kind": "BYTES_AVAILABLE", "sessionID": "synthetic-session-1"},
+    {"runID": "synthetic-lifecycle-1", "atMilliseconds": 1500, "kind": "READ_COMPLETED", "sessionID": "synthetic-session-1", "byteCount": 64},
+    {"runID": "synthetic-lifecycle-1", "atMilliseconds": 2500, "kind": "BYTES_AVAILABLE", "sessionID": "synthetic-session-1"},
+    {"runID": "synthetic-lifecycle-1", "atMilliseconds": 2500, "kind": "READ_COMPLETED", "sessionID": "synthetic-session-1", "byteCount": 32},
+    {"runID": "synthetic-lifecycle-1", "atMilliseconds": 61000, "kind": "SESSION_CLOSED", "sessionID": "synthetic-session-1"}
+  ]
+}

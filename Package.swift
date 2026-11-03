@@ -11,6 +11,8 @@ let package = Package(
     targets: [
         .target(name: "MSDKIOSCore"),
         .executableTarget(name: "MSDKIOSReplay", dependencies: ["MSDKIOSCore"]),
-        .testTarget(name: "MSDKIOSCoreTests", dependencies: ["MSDKIOSCore"])
+        .testTarget(name: "MSDKIOSCoreTests", dependencies: ["MSDKIOSCore"]),
+        .target(name: "MSDKIOSProbeSupport", dependencies: ["MSDKIOSCore"]),
+        .testTarget(name: "MSDKIOSProbeSupportTests", dependencies: ["MSDKIOSProbeSupport", "MSDKIOSCore"])
     ]
 )
