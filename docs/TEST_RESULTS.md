@@ -1,5 +1,105 @@
 # Test results
 
+## M5: ControllerProbe source handoff (host checks only) — 2026-11-03
+
+**Scope:** the first source handoff for the planned owner checkpoint on November 4 ([#4](https://github.com/bibek849/msdk-ios-lab/issues/4), [#6](https://github.com/bibek849/msdk-ios-lab/issues/6)). The component decisions are in [ADR 0003](decisions/0003-m5-controller-probe.md). It adds:
+- the `MSDKIOSAppleTransport` target, with a portable run controller and profile and an Apple-only External Accessory binding;
+- the `ControllerProbe` app, a hand-written Xcode project, `build-device.sh` and README in `apps/ios/ControllerProbe/`;
+- the experiment descriptor `experiments/H1-NATIVE-TRANSPORT-PROBE.json`.
+
+The M4 contract gains `RUN_STOPPED` with an explicit reason, and its `apply` uses typed throws. **The committed build is BLOCKED.** There is no write, handshake, network or payload-logging path.
+
+```sh
+swift --version
+swift test
+swift run msdk-ios-replay fixtures/synthetic-telemetry-v1.json
+python3 tools/check_repository.py
+python3 -m unittest discover -s tools/tests
+git diff --check
+```
+
+**PASS on Swift 6.4.2** (x86_64 Ubuntu 26.04.1 VM):
+- 55 tests passed with 0 failures: 16 telemetry, 22 observation-model and 17 run-controller tests.
+- No compiler warnings.
+- The replay CLI exited 0 with 3 samples and `delivery=REPLAY`.
+- The repository check reported 43 Markdown files, 188 local link targets and 10 JSON files.
+- The handoff tooling tests passed, and `git diff --check` was clean.
+
+**PASS on Swift 6.0.3:** the same 55 tests passed, and the replay CLI exited 0. As in M4, this used the official 24.04 toolchain with a private `libxml2.so.2` shim, so it is not CI's container.
+
+**Sensitivity check:** four alterations to the run controller, each restored before committing. Each was caught:
+
+| Alteration | Failed assertions | Failing tests |
+|---|---|---|
+| The read length ignores the 1 MiB total | 1 | 1 |
+| No stop on an input-stream error | 3 | 1 |
+| Every read is retained in the log, so the event budget is hit before the read budget | 4 | 1 |
+| Enumeration-only applies session events | 2 | 1 |
+
+**Local checks, not committed:**
+- `ExternalAccessoryProbe.swift` was type-checked on Linux with Swift 6.4.2 and 6.0.3, against hand-written stand-ins for the External Accessory and Combine names it uses. Object files contained the adapter's symbols, confirming its `#if canImport(ExternalAccessory)` branch compiled. **This checks Swift typing only. It is not an Apple SDK build.**
+- The Xcode project's 23 objects all resolve.
+- The scheme is well-formed XML and points at the defined target.
+- `Info.plist` parses and has no background modes.
+- `build-device.sh` passes `sh -n`.
+- The experiment descriptor passes `tools/prepare_handoff.py` validation as `DRAFT`, with 9 pending owner items.
+
+**NOT RUN:**
+- Opening the Xcode project, Apple compilation, signing and installation.
+- Any External Accessory call.
+- Any iPhone, RC-N3, Mini 4 Pro or DJI Fly step.
+
+These belong to the owner's H0 and H1.
+
+## M4: probe observation contract (host-only) — 2026-11-03
+
+**Scope:**
+- A design note, [PROBE_OBSERVATION_CONTRACT.md](PROBE_OBSERVATION_CONTRACT.md), written before the code.
+- A new library target, `MSDKIOSProbeSupport`, which depends only on `MSDKIOSCore`, and its test target `MSDKIOSProbeSupportTests`. There is no new product or dependency, and existing targets and the telemetry contract are unchanged.
+- Three original fixtures in `fixtures/synthetic-probe/`, using `org.example.synthetic.*` protocol names.
+
+The code performs no accessory, stream, network or device operation, and contains no vendor identifiers or packet data. It has no transmit path, and `ResearchCapabilities` is untouched.
+
+**Base:** upstream `main` at `0fbc297df3c5db950efafa1aeb7ca05a64c5af1b`.
+
+```sh
+swift --version
+swift test
+swift run msdk-ios-replay fixtures/synthetic-telemetry-v1.json
+python3 tools/check_repository.py
+git diff --check
+```
+
+**PASS on Swift 6.4.2** (x86_64 Ubuntu 26.04.1 VM):
+- `swift test` ran 38 tests with 0 failures: the 16 existing telemetry tests and 22 new probe tests.
+- The new targets compile with no warnings.
+- The replay CLI exited 0, accepting 3 samples with `delivery=REPLAY`.
+- The repository check passed with 41 Markdown files, 182 local link targets and 9 JSON files.
+- `git diff --check` was clean.
+
+**PASS on Swift 6.0.3** (the CI pin): the same 38 tests passed with 0 failures, and the replay CLI exited 0. This used the official `swift-6.0.3-RELEASE-ubuntu24.04` toolchain, with its signature verified.
+- This is **not** CI's environment. On Ubuntu 26.04, the 6.0.3 SwiftPM binaries need `libxml2.so.2`, so a private `LD_LIBRARY_PATH` entry pointed that name at the system's `libxml2.so.16`.
+- No tested code uses FoundationXML.
+- Hosted CI in the pinned `swift:6.0.3-jammy` container remains the reference.
+
+**Sensitivity check:** the reducer was altered four ways and restored before committing. Each alteration was caught:
+
+| Alteration | Failed assertions | Failing tests |
+|---|---|---|
+| A bytes-available event sets the first-read time | 2 | 1 |
+| The run-identity check is removed | 7 | 2 |
+| Opening the input stream also opens the output stream | 5 | 5 |
+| The window end becomes exclusive | 3 | 2 |
+
+Applying each observation to a copy is defense in depth. The reducer already completes every check before it changes anything, so removing the copy would not be detected by these tests.
+
+**NOT RUN:**
+- Any iOS or Xcode build.
+- Any External Accessory or stream API.
+- Any device, DJI Fly, RC-N3 or Mini 4 Pro step.
+
+M5 is not approved.
+
 ## First external contributor inbox — 2026-11-02 America/New_York
 
 **PASS: isolated receiver, signed GitHub delivery and authenticated client access** for `yout221496-ops`, GitHub numeric ID `351773451`. This is notification infrastructure evidence. Actual contributor Claude Code connection/tool invocation, scheduling and physical iPhone/DJI tests remain **NOT RUN** pending a separate result.

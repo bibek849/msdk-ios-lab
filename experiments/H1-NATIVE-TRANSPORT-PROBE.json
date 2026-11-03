@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "id": "H1-NATIVE-TRANSPORT-PROBE",
+  "kind": "read_only_hardware",
+  "stage": "S0",
+  "question": "Under an owner-approved profile, does this exact ControllerProbe build observe RC-N3 accessory visibility, advertised protocols, at most one session, input-stream state and successful reads within 60 seconds, separately in five COLD runs without DJI Fly and five PRIMED runs, with no application-level writes?",
+  "build_commands": [
+    "Review apps/ios/ControllerProbe/README.md, apps/ios/ControllerProbe/build-device.sh and Sources/MSDKIOSAppleTransport at this commit.",
+    "Copy apps/ios/ControllerProbe/Config/Local.xcconfig.example to Local.xcconfig and privately set the team, bundle identifier and the owner-approved profile.",
+    "apps/ios/ControllerProbe/build-device.sh (prints the Xcode version, source SHA and executable SHA-256).",
+    "xcrun devicectl device install app --device <device-id> <app path printed by build-device.sh>"
+  ],
+  "procedure": [
+    "H0: install the BLOCKED default build and confirm Activation shows BLOCKED: PROFILE_BLOCKED with Start disabled.",
+    "Record privately: iOS version and build, Xcode version, signing team type, cable, RC-N3 and Mini 4 Pro firmware, DJI Fly version.",
+    "Record the owner's permission decision, set the approved profile in Local.xcconfig and rebuild; record the new executable SHA-256.",
+    "Bench: propellers removed, operator present, phone unlocked and in the foreground, RC-N3 cable connected for all ten runs.",
+    "COLD runs 1-5: power-cycle the RC-N3 and aircraft without launching DJI Fly in that boot sequence; wait 30 s; launch ControllerProbe fresh; choose Cold; tap Start.",
+    "PRIMED runs 1-5, after all COLD runs: power-cycle; use DJI Fly until it shows the aircraft connected; terminate Fly from the app switcher; wait 10 s; launch ControllerProbe fresh; choose Primed; tap Start.",
+    "After each run, copy the run record into that run's private record and force-quit ControllerProbe.",
+    "If DJI Fly launches during a COLD run, record that run as INCOMPLETE (primed), not COLD.",
+    "Keep all records private until publication is decided; share only owner-approved counts and timings."
+  ],
+  "expected_outcomes": [
+    "Each run record names the source SHA, activation, cohort, end reason and cleanup time, with every readiness value UNKNOWN.",
+    "Layers L1-L5 (accessory visible, protocols advertised, session created, input open, first successful read) are reported separately with times; output stays NOT_REQUESTED and no write is attempted.",
+    "A COLD cohort that reaches L5 is a transport GO candidate only; L5 in the PRIMED cohort alone keeps independent initialization blocked.",
+    "No result establishes controller meaning, aircraft communication, telemetry validity or any command capability."
+  ],
+  "stop_conditions": [
+    "Any motor or propeller activity, or a controller or aircraft state or mode change.",
+    "An unexpected iOS prompt, pairing or permission request, or a probe crash.",
+    "A WRITE_ATTEMPT_BLOCKED or OUTPUT_STREAM_ACTIVITY flag in a run record.",
+    "A thermal or low-battery warning, or unstable power.",
+    "Any step outside this procedure."
+  ],
+  "prerequisites": [
+    {"requirement": "Owner decision on using the selected accessory protocol in a non-distributed development build, and on publishing run results", "status": "pending", "evidence": null},
+    {"requirement": "Owner-selected profile (ENUMERATION_ONLY or SESSION_OBSERVATION) and, for a session, the single protocol name", "status": "pending", "evidence": null},
+    {"requirement": "H0 Mac compilation, signing and installation of this exact commit", "status": "pending", "evidence": null},
+    {"requirement": "Private inventory: iOS build, firmware versions, cable and DJI Fly version", "status": "pending", "evidence": null},
+    {"requirement": "Bench safety: propellers removed and operator present", "status": "pending", "evidence": null}
+  ],
+  "hardware": {
+    "phone_model": "iPhone 15 Pro Max",
+    "phone_os_build": null,
+    "controller": "DJI RC-N3",
+    "controller_firmware": null,
+    "aircraft": "DJI Mini 4 Pro",
+    "aircraft_firmware": null,
+    "cable": null
+  },
+  "limits": {
+    "repetitions": 10,
+    "max_seconds_per_run": 60
+  }
+}

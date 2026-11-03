@@ -37,3 +37,7 @@ node_modules/
 !.dev.vars.example
 services/agent-inbox/wrangler.pilot.jsonc
 *.pem
+apps/ios/ControllerProbe/Config/Local.xcconfig
+apps/ios/ControllerProbe/build/
+xcuserdata/
+*.xcuserstate

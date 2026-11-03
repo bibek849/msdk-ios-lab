@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "synthetic": true,
+  "source": "MOCK",
+  "runID": "synthetic-late-1",
+  "cohort": "PRIMED",
+  "startedAtMilliseconds": 2000,
+  "windowMilliseconds": 60000,
+  "events": [
+    {"runID": "synthetic-late-1", "atMilliseconds": 2000, "kind": "ACCESSORY_VISIBLE", "accessoryID": 3},
+    {"runID": "synthetic-late-1", "atMilliseconds": 2010, "kind": "PROTOCOLS_ADVERTISED", "accessoryID": 3, "names": ["org.example.synthetic.alpha"]},
+    {"runID": "synthetic-late-1", "atMilliseconds": 2020, "kind": "SESSION_CREATED", "sessionID": "synthetic-session-3", "protocolName": "org.example.synthetic.alpha"},
+    {"runID": "synthetic-late-1", "atMilliseconds": 2030, "kind": "STREAM_OPENED", "sessionID": "synthetic-session-3", "stream": "INPUT"},
+    {"runID": "synthetic-late-1", "atMilliseconds": 2100, "kind": "READ_COMPLETED", "sessionID": "synthetic-session-3", "byteCount": 16},
+    {"runID": "synthetic-late-1", "atMilliseconds": 3000, "kind": "SESSION_CLOSED", "sessionID": "synthetic-session-3"},
+    {"runID": "synthetic-late-1", "atMilliseconds": 3100, "kind": "READ_COMPLETED", "sessionID": "synthetic-session-3", "byteCount": 8},
+    {"runID": "synthetic-late-1", "atMilliseconds": 3200, "kind": "STREAM_OPENED", "sessionID": "synthetic-session-3", "stream": "OUTPUT"},
+    {"runID": "synthetic-late-1", "atMilliseconds": 3300, "kind": "SESSION_CLOSED", "sessionID": "synthetic-session-3"},
+    {"runID": "synthetic-old-run", "atMilliseconds": 3400, "kind": "SYNTHETIC_READINESS", "fact": "AIRCRAFT_READY", "value": true}
+  ]
+}
