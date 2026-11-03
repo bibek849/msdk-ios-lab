@@ -1,5 +1,7 @@
 # Contributor feedback: <task / run ID>
 
+<!-- msdk-hardware-feedback:v1 -->
+
 > Template only. This is a concise feedback record, not the raw device report. Include only material approved for the intended recipient and use. A redacted report is not automatically approved for publication or upload to an AI service.
 
 ## Identity and outcome

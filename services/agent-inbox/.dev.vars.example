@@ -1,0 +1,5 @@
+# Synthetic local-only values. Generate different random secrets for a live pilot.
+WEBHOOK_SECRET="local-synthetic-webhook-secret-not-for-deployment"
+INBOX_TOKEN_SHA256="REPLACE_WITH_SHA256_OF_LOCAL_INBOX_TOKEN"
+INSTALLATION_ID="12345"
+PILOT_ENABLED="true"

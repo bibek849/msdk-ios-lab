@@ -12,7 +12,8 @@ from urllib.parse import unquote, urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXCLUDED = {".git", ".build", ".swiftpm", "artifacts", "private-evidence"}
+EXCLUDED = {".git", ".build", ".swiftpm", "artifacts", "private-evidence",
+            "node_modules", ".wrangler", ".worker-build", ".test-build", "dist"}
 
 
 def included(path):

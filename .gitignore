@@ -28,3 +28,12 @@ captures/
 *.h264
 *.hevc
 __pycache__/
+node_modules/
+.wrangler/
+.worker-build/
+.test-build/
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+services/agent-inbox/wrangler.pilot.jsonc
+*.pem
