@@ -112,7 +112,7 @@ public struct ProbeRun: Sendable {
                               startedAtMilliseconds: startedAtMilliseconds, windowEndMilliseconds: windowEnd)
     }
 
-    public mutating func apply(_ observation: ProbeObservation) throws {
+    public mutating func apply(_ observation: ProbeObservation) throws(ProbeError) {
         var next = state
         try Self.reduce(&next, observation)
         state = next
@@ -125,7 +125,7 @@ public struct ProbeRun: Sendable {
         state.endedAtMilliseconds = state.windowEndMilliseconds
     }
 
-    private static func reduce(_ s: inout ProbeRunState, _ observation: ProbeObservation) throws {
+    private static func reduce(_ s: inout ProbeRunState, _ observation: ProbeObservation) throws(ProbeError) {
         // Identity, then terminal state, then time, then the event's own rules.
         guard observation.runID == s.runID else { throw ProbeError.wrongRun }
         guard s.endReason == nil else { throw ProbeError.runEnded }
@@ -238,22 +238,22 @@ public struct ProbeRun: Sendable {
         }
     }
 
-    private static func requireAccessory(_ s: ProbeRunState, _ accessoryID: UInt64) throws {
+    private static func requireAccessory(_ s: ProbeRunState, _ accessoryID: UInt64) throws(ProbeError) {
         guard let current = s.accessoryID else { throw ProbeError.accessoryNotVisible }
         guard current == accessoryID else { throw ProbeError.differentAccessory }
     }
 
-    private static func requireAdvertised(_ s: ProbeRunState, _ protocolName: String) throws {
+    private static func requireAdvertised(_ s: ProbeRunState, _ protocolName: String) throws(ProbeError) {
         guard let names = s.advertisedProtocols else { throw ProbeError.protocolsNotObserved }
         guard names.contains(protocolName) else { throw ProbeError.protocolNotAdvertised }
     }
 
-    private static func requireSession(_ s: ProbeRunState, _ sessionID: String) throws {
+    private static func requireSession(_ s: ProbeRunState, _ sessionID: String) throws(ProbeError) {
         guard let current = s.sessionID else { throw ProbeError.noSession }
         guard current == sessionID else { throw ProbeError.wrongSession }
     }
 
-    private static func requireOpenInput(_ s: ProbeRunState, _ sessionID: String) throws {
+    private static func requireOpenInput(_ s: ProbeRunState, _ sessionID: String) throws(ProbeError) {
         try requireSession(s, sessionID)
         guard s.inputStream == .open else { throw ProbeError.inputNotOpen }
     }
@@ -321,7 +321,7 @@ public struct SyntheticProbeFixture: Codable, Sendable {
         for (index, observation) in events.enumerated() {
             do {
                 try run.apply(observation)
-            } catch let error as ProbeError {
+            } catch {
                 rejections.append(ProbeRejectionRecord(index: index, error: error))
             }
         }
