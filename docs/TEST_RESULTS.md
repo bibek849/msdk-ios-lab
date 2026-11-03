@@ -1,5 +1,57 @@
 # Test results
 
+## Contributor event inbox: live pilot — 2026-11-02 America/New_York
+
+**PASS: GitHub → signed receiver → D1 → authenticated Python client**, for `bibek849` on this public repository. This qualifies notification delivery only. The maintainer does not need Claude Code; contributors may independently use the optional Claude adapter or another agent. Actual Claude execution and physical hardware remain **NOT RUN**.
+
+Receiver source: `e640747b3a84e058a0221bb6299d9af33a4a7890`, with subsequent changes limited to setup-origin validation and documentation. Worker `msdk-ios-lab-inbox`, version `fb42ccd9-f9ef-4751-9da4-da858b8917da`, serves [the health endpoint](https://msdk-ios-lab-inbox.onrampyadav.workers.dev/health). GitHub App `5588168` / `msdk-ios-lab-inbox-bibek849`, installation `178014955`, is installed on **only** `bibek849/msdk-ios-lab`, with read-only Issues, Pull requests and Metadata permissions. No App private key or AI credential was deployed.
+
+Cloudflare Workers Free was verified in the account dashboard. Only the new Worker and dedicated D1 database were created; existing applications, DNS, domains and billing settings were not modified. The student-offer instructions were opened for inspection, without enrollment or a paid-plan change.
+
+Deployment commands from `services/agent-inbox`, using isolated Wrangler authentication and the ignored configuration pinned to the new pilot database:
+
+```sh
+node_modules/.bin/wrangler d1 create msdk-ios-lab-inbox-pilot
+node_modules/.bin/wrangler d1 migrations apply msdk-ios-lab-inbox-pilot --remote --config wrangler.pilot.jsonc
+node_modules/.bin/wrangler deploy --config wrangler.pilot.jsonc
+node_modules/.bin/wrangler secret bulk /PRIVATE/PILOT/worker-secrets.json --config wrangler.pilot.jsonc
+node_modules/.bin/wrangler deploy --config wrangler.pilot.jsonc
+```
+
+`/PRIVATE/PILOT` redacts the local private directory, not command behavior. The first deployment was disabled; the final deployment used the observed installation ID and enabled the pilot after its two secrets were installed. The remote migration executed seven commands successfully. An initial deployment attempt lacked `workers_scripts:write`; it failed without changing an existing Worker. Adding that required Wrangler scope allowed publication. A setup signing secret was replaced before production use after a diagnostic revealed it; no credential value is included in this repository.
+
+Health returned HTTP 200 with `mode=notification_only`; unauthenticated inbox access returned HTTP 401; the configured client returned schema 1 for `bibek849`. A raw Python default user-agent probe initially received Cloudflare edge error 1010; the documented client user agent succeeded. These observations do not establish universal network reachability.
+
+Live fixtures: [issue #10](https://github.com/bibek849/msdk-ios-lab/issues/10) and [PR #11](https://github.com/bibek849/msdk-ios-lab/pull/11).
+
+| Live check | Observed result |
+|---|---|
+| Issue assignment and opening | Inbox IDs 1 and 2; assignment delivery `7f12c2d0-d71f-11f1-98d8-eacd8a32fa6a` |
+| PR opening | Inbox ID 3, correct PR number and source SHA |
+| Labels and ordinary comment | IDs 4–6; comment `6592309451` preserved its GitHub reference |
+| Synthetic maintainer hardware marker | ID 7, `kind=hardware_feedback`, comment `6592309816`; body explicitly says hardware NOT RUN |
+| Review and inline comment | IDs 8–9, review `5745482823`, comment `4449510595` |
+| Resolved review thread | ID 10, `pull_request_review_thread.resolved` |
+| GitHub assignment redelivery | HTTP 200 with `{"status":"accepted","duplicate":true,"id":1}`; one retained row for the delivery |
+| Explicit acknowledgment | Ack IDs 1–9 removed exactly those pending records; ID 10 remained. Repeating ack ID 1 succeeded idempotently |
+| Unassignment and closure | IDs 11 and 14 arrived after the task was unassigned; retained tracking also delivered the intervening label/comment events |
+| Client restart and drain | Independent CLI processes fetched retained events; ack IDs 10–14 followed by fetch returned an empty pending list |
+
+The actual CLI invocations used the private absolute config path; here it is intentionally redacted:
+
+```sh
+python3 tools/agent_inbox.py --config /PRIVATE/PILOT/client.json fetch --limit 20
+python3 tools/agent_inbox.py --config /PRIVATE/PILOT/client.json fetch --limit 50
+python3 tools/agent_inbox.py --config /PRIVATE/PILOT/client.json ack 1 2 3 4 5 6 7 8 9
+python3 tools/agent_inbox.py --config /PRIVATE/PILOT/client.json ack 1
+python3 tools/agent_inbox.py --config /PRIVATE/PILOT/client.json ack 10 11 12 13 14
+python3 tools/agent_inbox.py --config /PRIVATE/PILOT/client.json fetch --limit 50
+```
+
+The assignment was recorded at `2026-11-03T00:42:51.451Z`, about 2.45 seconds after the payload's issue update timestamp. This single observation is not a delivery latency guarantee or a CPU benchmark. No sustained-load, free-quota exhaustion or production outage recovery test was performed.
+
+[Hosted run 41554835049](https://github.com/bibek849/msdk-ios-lab/actions/runs/41554835049) passed all four jobs on the initial implementation revision: Swift 6.0.3 synthetic tests, local document links/JSON, contribution handoff tests and agent inbox service tests. The new inbox job is now required on `main`, preserving the existing three requirements and strict mode. Later PR revisions must independently pass these checks before merge.
+
 ## Contributor event inbox: local validation — 2026-11-02
 
 Scope: a notification-only Cloudflare Worker/D1 receiver, the Python inbox client, private pilot setup and their tests. These checks use original synthetic GitHub payloads and temporary test credentials. They do not contact DJI, operate hardware, execute event instructions or establish live GitHub App delivery.
@@ -23,11 +75,11 @@ npm run db:local
 
 **PASS: TypeScript validation and 23 Miniflare/D1 integration tests.** Coverage includes signed assignment delivery; issue/PR routing; reviews, inline comments and hardware-feedback classification; bad signatures and repository/installation mismatches; duplicate/concurrent deliveries; exact, atomic and idempotent acknowledgment; recipient isolation; queue backpressure; bounded multibyte responses; streamed oversized bodies; disabled configuration; restart persistence; out-of-order observations; and actor normalization compatible with the Python client. Synthetic hardware-feedback events explicitly state hardware **NOT RUN**.
 
-**PASS: deployment dry run**, producing an approximately 15 KiB Worker bundle. `npm run build` invokes `wrangler deploy --dry-run`; it does not publish a Worker. **PASS: local D1 migration**, reporting seven executed commands against local state. `npm run db:local` explicitly uses `--local`; no production database was migrated by this check.
+**PASS: deployment dry run**, producing a 14.87 KiB Worker bundle (4.70 KiB gzip). The exact invocation was `WRANGLER_LOG_PATH=/private/tmp/msdk-inbox-final-build.log WRANGLER_SEND_METRICS=false npm run build`. `npm run build` invokes `wrangler deploy --dry-run`; it does not publish a Worker. **PASS: local D1 migration**, reporting seven executed commands against local state, using `WRANGLER_LOG_PATH=/private/tmp/msdk-inbox-migration.log WRANGLER_SEND_METRICS=false npm run db:local`. `npm run db:local` explicitly uses `--local`; no production database was migrated by this check.
 
-The dependency audit reported **zero known vulnerabilities** for the installed dependency graph. This is an advisory-database result, not proof that the service is vulnerability-free. Exact package versions and transitive dependencies are recorded in the service package manifest and lockfile.
+The final `npm install --ignore-scripts --cache /private/tmp/msdk-agent-inbox-npm-cache` installation audit reported **zero known vulnerabilities** for the installed dependency graph after dependency overrides were applied. No separate post-fix `npm audit` run is claimed. Local tooling was Node 25.9.0 / npm 11.12.1 on arm64 macOS; CI uses pinned Node 22.23.4. This is an advisory-database result, not proof that the service is vulnerability-free. Exact package versions and transitive dependencies are recorded in the service package manifest and lockfile.
 
-Independent integration review identified two schema/setup mismatches: invalid origin forms could pass initialization but fail client validation, and unsupported actor names could pass receiver normalization but fail client validation. Both boundaries were aligned and covered by the final local checks above.
+Independent integration review identified two schema/setup mismatches: invalid origin forms could pass initialization but fail client validation, and unsupported actor names could pass receiver normalization but fail client validation. Both boundaries were aligned and covered by the final local checks above. A final initializer review also rejected empty userinfo origins (`https://@pilot.example` and `https://:@pilot.example`); `python3 -m unittest discover -s tools/tests -p test_init_inbox_pilot.py -v` passed all three setup tests after that adjustment.
 
 ### Evidence still required
 

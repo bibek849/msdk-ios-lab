@@ -5,7 +5,7 @@
 - Scope: repository collaboration infrastructure, outside the iOS runtime
 - Pilot: `bibek849` on `bibek849/msdk-ios-lab`
 
-At the 2026-11-02 setup checkpoint, the App is registered and installed only on the pilot repository, and the new D1 database migration has passed. Worker deployment, live event delivery and actual Claude receipt remain separate qualifications; see [the deployment checkpoint](../AGENT_INBOX_DEPLOYMENT.md) and [test ledger](../TEST_RESULTS.md). Registration does not change the notification-only scope of this decision.
+At the 2026-11-02 live checkpoint, the App is installed only on the pilot repository, the new D1 migration has passed, and the enabled Worker has delivered real GitHub assignment, comment, review and inline-review events to the authenticated Python client. Maintainer-authored synthetic hardware feedback was classified as feedback without establishing a physical result. Live exact acknowledgment and GitHub redelivery checks also passed. Actual Claude receipt is **NOT RUN** and is an optional contributor qualification, not a requirement for the maintainer or the CLI pilot. See [the deployment checkpoint](../AGENT_INBOX_DEPLOYMENT.md) and [test ledger](../TEST_RESULTS.md). This evidence does not change the notification-only scope of the decision.
 
 ## Problem
 

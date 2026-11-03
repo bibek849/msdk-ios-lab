@@ -59,6 +59,7 @@ class PilotInitializationTests(unittest.TestCase):
     def test_invalid_origins_write_nothing(self):
         with tempfile.TemporaryDirectory() as temporary:
             for url in ["http://pilot.example", "https://user:pass@pilot.example",
+                        "https://@pilot.example", "https://:@pilot.example",
                         "https://pilot.example/path", "https://pilot.example?token=x",
                         "https://pilot.example#x", "https://pilot.example:0",
                         "https://pilot.example:99999", "https://pilot.example\n",
