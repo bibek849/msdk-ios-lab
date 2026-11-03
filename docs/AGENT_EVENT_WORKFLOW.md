@@ -2,7 +2,7 @@
 
 **Yes: a contributor can connect their own agent to GitHub, follow assigned work, and return a patch for the hardware owner to test.** Repository access, event delivery and permission to run a coding task are separate settings. An AI subscription alone does not create an always-running listener.
 
-Status, **2026-11-02**: this document defines the opt-in workflow. The repository has issues, PRs, labels and software CI. No project GitHub App, webhook receiver, contributor scheduler or unattended coding worker has been installed. The commands below are read-only snapshots; the webhook section is a future design.
+Status, **2026-11-02**: the opt-in workflow now has a [Worker/D1 receiver and client implementation](AGENT_INBOX_DEPLOYMENT.md) for one contributor, `bibek849`. The deployment guide records live setup separately. [Claude Code](CLAUDE_CODE_PILOT.md) can consume it using an explicit local `/loop` prompt. No unattended coding executor is included. The `gh` commands below remain read-only snapshots; the later architecture section distinguishes implemented pilot features from future extensions.
 
 ## Start with each contributor's own account
 
@@ -21,7 +21,7 @@ There is no required AI vendor. A personal supported subscription can be used fo
 | GitHub notifications + contributor starts their agent | Subscribe to the assigned issue and PR; open the thread in the agent when notified | Works without an always-on machine or service; the human starts work |
 | Contributor-owned scheduled check | Configure the agent product's supported recurring task to read assignments and tracked threads, initially every 30 minutes while contributing | Cadence is a project suggestion, not a delivery guarantee. Local schedules require the relevant app/machine to be available; quota, connectivity and product permissions apply |
 | Product-native GitHub event trigger | Use a supported integration for the events it actually offers | Coverage and repository access differ; verify the account's feature availability |
-| Project GitHub App + durable event inbox | Maintainer installs a narrowly scoped App; a service routes events to opted-in contributor workers | Requires a separately implemented, deployed and operated service; not active here |
+| Project GitHub App + durable event inbox | The implemented Worker routes assigned tasks, review comments and marked hardware feedback to one opted-in recipient | [Deployment and operation](AGENT_INBOX_DEPLOYMENT.md) are separate from agent execution; the pilot has no automatic coding worker |
 
 **Current Codex/ChatGPT options:** eligible ChatGPT web/mobile plans support GitHub PR event tasks, including selected comments, reviews and commit updates. The current documentation excludes these event triggers from desktop, CLI and IDE surfaces; it does not establish issue-assignment triggers. A contributor can use a supported local scheduled task for assignment checks, with the machine and desktop app running. Check plan/workspace eligibility first. [Scheduled tasks](https://learn.chatgpt.com/docs/automations?surface=app)
 
@@ -87,7 +87,9 @@ flowchart LR
 - **Hardware result:** post only publication-approved [test feedback](templates/TEST_FEEDBACK.md), link the issue and PR, identify tested commit/artifact/run and set `status: hardware-results`. That is the signal for the contributor's next review; it does not automatically approve another physical test.
 - **Closure/reassignment:** state what completed or changed. A listener reconciles both the issue and PR before resuming; a merged PR alone does not close an unresolved hardware capability.
 
-## Future webhook service: explicit implementation contract
+## Webhook service: pilot and extension contract
+
+The implemented pilot covers the six issue/PR event families below, durable bounded D1 storage, raw-body signature validation, exact repository/installation/recipient scoping, duplicate handling, explicit receipt acknowledgments and an authenticated Python client. It stores bounded public excerpts as untrusted data. CI/check events, multi-contributor routing, automatic reconciliation/retention and coding-worker execution remain deferred. It does not create a per-task coding lock because it never launches coding work. See [the architecture decision](decisions/0001-agent-inbox.md) and [deployment guide](AGENT_INBOX_DEPLOYMENT.md) for actual limits and recovery.
 
 If scheduling becomes inadequate, a maintainer-owned **GitHub App** can receive events for this repository and route them to an authenticated contributor inbox. The contributor's worker polls its inbox or maintains its own authenticated connection; GitHub cannot directly wake a sleeping arbitrary desktop agent. Separate event collection from code execution, and keep AI credentials with each contributor. Do not grant administration, merge, signing or device access to the receiver.
 
@@ -111,4 +113,4 @@ Before deploying, the implementation must demonstrate:
 5. Per-contributor opt-in, task/run/time/spend limits, cancellation/revocation, an audit record of event → task → revision → result, and minimal retained public data. No raw hardware evidence or provider credentials in event logs.
 6. No privileged `pull_request_target` checkout/execution of contributor code, arbitrary comment-to-shell command, or public-PR worker with signing/maintainer secrets. Code workers use isolated forks/checkouts; receiver credentials are unavailable to submitted code. Posts require contributor opt-in and deduplication; ignore self-generated acknowledgments to prevent bot loops.
 
-Validate with synthetic assignment, comment, review, CI and hardware-feedback events plus duplicate, reordered, revoked and missing-delivery cases. Then trial one opted-in contributor in observation mode before enabling bounded code tasks. This is a future acceptance plan, **not evidence of an installed or tested service**.
+Validate each implemented event family with synthetic assignment, comment, review and hardware-feedback events plus duplicate, reordered and revoked cases. The pilot deliberately excludes CI events; test those before enabling a future extension. Trial one opted-in contributor in observation mode before enabling bounded code tasks. [Test results](TEST_RESULTS.md) and the deployment record distinguish local software checks, live GitHub delivery and an actual agent session.

@@ -82,7 +82,7 @@ Scoped issue → contributor + agent → small PR → hosted checks + review
 
 Start with [AI_CONTRIBUTOR_WORKFLOW.md](docs/AI_CONTRIBUTOR_WORKFLOW.md). The [handoff format and tool](docs/HANDOFF_FORMAT.md) prepare a request bound to committed source; they do not execute commands or approve a hardware run. The [maintainer playbook](docs/MAINTAINER_PLAYBOOK.md) describes how requests enter the local test queue.
 
-For ongoing work, assign the human contributor's GitHub account and keep actionable communication on the linked issue/PR. Contributors can use native notifications, their own scheduled agent checks, or eligible product event integrations. The [event workflow](docs/AGENT_EVENT_WORKFLOW.md) includes setup commands, an opt-in template and the future webhook design. No project-wide agent listener is deployed.
+For ongoing work, assign the human contributor's GitHub account and keep actionable communication on the linked issue/PR. The [event workflow](docs/AGENT_EVENT_WORKFLOW.md) now has a [GitHub App receiver and durable inbox implementation](docs/AGENT_INBOX_DEPLOYMENT.md) for a one-contributor pilot. [Claude Code setup](docs/CLAUDE_CODE_PILOT.md) uses the same provider-neutral client. See the deployment record for live status; receipt of an event does not authorize coding, merging or hardware execution.
 
 ## Project standards
 

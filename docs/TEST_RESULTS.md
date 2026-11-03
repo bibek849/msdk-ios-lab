@@ -1,5 +1,47 @@
 # Test results
 
+## Contributor event inbox: local validation — 2026-11-02
+
+Scope: a notification-only Cloudflare Worker/D1 receiver, the Python inbox client, private pilot setup and their tests. These checks use original synthetic GitHub payloads and temporary test credentials. They do not contact DJI, operate hardware, execute event instructions or establish live GitHub App delivery.
+
+From the repository root:
+
+```sh
+python3 -m unittest discover -s tools/tests -v
+```
+
+**PASS: 28 Python tests** — 14 inbox-client tests, 11 existing handoff tests and 3 pilot-initialization tests. The client tests use a temporary loopback HTTP server to verify fetch/explicit acknowledgment, identity/schema/URL checks, pagination, redirect refusal, authentication errors, malformed/oversized responses, private-file permissions and inert event text. Setup tests verify private credential files, the token hash, read-only registration parameters, overwrite refusal and invalid-origin rejection. An initial sandboxed run could not bind the local HTTP fixture; the successful run permitted loopback sockets. No public HTTP service was started by these tests.
+
+From `services/agent-inbox`:
+
+```sh
+npm run check
+npm test
+npm run build
+npm run db:local
+```
+
+**PASS: TypeScript validation and 23 Miniflare/D1 integration tests.** Coverage includes signed assignment delivery; issue/PR routing; reviews, inline comments and hardware-feedback classification; bad signatures and repository/installation mismatches; duplicate/concurrent deliveries; exact, atomic and idempotent acknowledgment; recipient isolation; queue backpressure; bounded multibyte responses; streamed oversized bodies; disabled configuration; restart persistence; out-of-order observations; and actor normalization compatible with the Python client. Synthetic hardware-feedback events explicitly state hardware **NOT RUN**.
+
+**PASS: deployment dry run**, producing an approximately 15 KiB Worker bundle. `npm run build` invokes `wrangler deploy --dry-run`; it does not publish a Worker. **PASS: local D1 migration**, reporting seven executed commands against local state. `npm run db:local` explicitly uses `--local`; no production database was migrated by this check.
+
+The dependency audit reported **zero known vulnerabilities** for the installed dependency graph. This is an advisory-database result, not proof that the service is vulnerability-free. Exact package versions and transitive dependencies are recorded in the service package manifest and lockfile.
+
+Independent integration review identified two schema/setup mismatches: invalid origin forms could pass initialization but fail client validation, and unsupported actor names could pass receiver normalization but fail client validation. Both boundaries were aligned and covered by the final local checks above.
+
+### Evidence still required
+
+| Layer | Status at this local checkpoint |
+|---|---|
+| Local synthetic Worker/D1 and Python suites | PASS as described above |
+| Free-plan Cloudflare deployment and production D1 migration | NOT RUN |
+| Registered/installed GitHub App and real signed webhook delivery | NOT RUN |
+| End-to-end live assignment, review comment and synthetic feedback receipt | NOT RUN |
+| Claude Code login, `/loop` scheduling and visible event consumption | NOT RUN |
+| iPhone, DJI, flight, Unity/headset and hardware performance | NOT RUN; outside these tooling checks |
+
+Record subsequent live results separately with the source revision, deployment/version and tested GitHub item identities. A successful inbox acknowledgment means receipt only; it is not task completion, code execution permission or hardware approval.
+
 ## Reuse policy and agent events — 2026-11-02
 
 Scope: reuse-first component decisions, contributor instructions and event-subscription design. No runtime, dependency, CI configuration, installed scheduler or hardware integration changed.

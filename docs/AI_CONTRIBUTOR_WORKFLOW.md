@@ -17,7 +17,7 @@ See [the backlog](CONTRIBUTOR_BACKLOG.md). LAB-004 and LAB-005 are starting poin
 
 ## The working loop
 
-For ongoing assignments and feedback, use the [GitHub event workflow](AGENT_EVENT_WORKFLOW.md) and [opt-in template](templates/AGENT_SUBSCRIPTION.md). Start with native notifications or your own supported scheduled checks. A GitHub connection can supply repository access; event delivery and permission to run a coding task must also be configured. There is no project-wide listener running today.
+For ongoing assignments and feedback, use the [GitHub event workflow](AGENT_EVENT_WORKFLOW.md) and [opt-in template](templates/AGENT_SUBSCRIPTION.md). The [implemented inbox pilot](AGENT_INBOX_DEPLOYMENT.md) delivers notifications to one opted-in contributor; [Claude Code instructions](CLAUDE_CODE_PILOT.md) show how to consume it. A GitHub connection supplies repository access; event delivery and permission to run a coding task are separate. Consult the deployment record for live status.
 
 ```mermaid
 flowchart LR

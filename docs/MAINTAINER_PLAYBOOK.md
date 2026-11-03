@@ -12,7 +12,7 @@ Start with a few well-scoped tasks instead of a large empty board. Keep independ
 
 Before assigning implementation, require the [component decision](templates/COMPONENT_DECISION.md): why the next iOS capability needs it, what can be reused and the specific incompatibility to address. Compatible code stays in place; language defaults govern necessary new code.
 
-For an opted-in agent contributor, assign their human GitHub account and link the task brief, following [the event workflow](AGENT_EVENT_WORKFLOW.md). Ask external contributors to comment first so they can be assigned without upstream write access. Keep scope changes and approved hardware feedback on the linked issue/PR; update current labels when blocked, reassigned or complete. Receiving a notification never grants device or merge authority. No central agent listener is configured.
+For an opted-in agent contributor, assign their human GitHub account and link the task brief, following [the event workflow](AGENT_EVENT_WORKFLOW.md). Ask external contributors to comment first so they can be assigned without upstream write access. Keep scope changes and approved hardware feedback on the linked issue/PR; update current labels when blocked, reassigned or complete. Receiving a notification never grants device or merge authority. Operate the one-contributor receiver using [the deployment guide](AGENT_INBOX_DEPLOYMENT.md); it never runs contributor code.
 
 ## Track state explicitly
 

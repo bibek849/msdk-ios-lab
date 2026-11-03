@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "msdk-ios-lab-inbox",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": { "enabled": false },
+  "vars": {
+    "REPOSITORY": "bibek849/msdk-ios-lab",
+    "REPOSITORY_ID": "1443581816",
+    "CONTRIBUTOR_LOGIN": "bibek849",
+    "CONTRIBUTOR_ID": "77296559",
+    "INSTALLATION_ID": "0",
+    "PILOT_ENABLED": "false",
+    "TRACKED_ISSUES": "",
+    "TRACKED_PRS": ""
+  },
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "msdk-ios-lab-inbox-pilot",
+    "database_id": "00000000-0000-0000-0000-000000000000",
+    "migrations_dir": "migrations"
+  }]
+}
